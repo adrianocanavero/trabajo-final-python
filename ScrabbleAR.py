@@ -3,6 +3,7 @@ from random import choice
 import m_buscador
 import m_tablero
 from m_fichas import valores_letras
+import m_maquina
 
 puntos_jugador = 0
 puntos_maquina = 0
@@ -44,88 +45,113 @@ backup_text = [] #lista con texto de botones p/ restablecer en caso de palabra e
 palabra = [] # borre letras usadas y solo queda palabra. mande a las funciones que usaban letras_usadas palabras y funcionan igual.
 pos_atril_usadas = [] # lista con las posiciones usadas del atril. Sirve en caso de reponer y para que no se vuelvan a usar.
 # reponer, además,  cuando se usa una letra se guarda acá y si está acá ya no se puede usar otra vez
+turno_jugador = choice([True, False])
 
 while True:
     event, values = window.read()
     #print(pos_atril_usadas)
     #print(backup_text)
     #print(event)
+    #print(turno_jugador)
     if event in (None, 'Terminar'):
         break
-    if m_tablero.puedo_cambiar(cambiar,event,lugares_usados_temp,lugares_usados_total):  
-        
-    #INGRESAR PRIMERA LETRA
-        if not lugares_usados_total: # Si lugares usados es vacio, solo permito ingresar en inicio.
-            if event == INICIO:
-                m_tablero.agregar_letra(lugares_usados_total,backup_text,event,escribir,lugares_usados_temp,palabra,boton_de_la_letra,window,pos_atril_usadas)  
-                cambiar = False
-                letras_ingresadas += 1
-        else:
-            #DETERMINAR SI SE INGRESA HORIZONTAL O VERTICAL
-            #print(horizontal)
-            if not lugares_usados_temp:
-                m_tablero.agregar_letra(lugares_usados_total,backup_text,event,escribir,lugares_usados_temp,palabra,boton_de_la_letra,window,pos_atril_usadas)
-                cambiar = False
-                letras_ingresadas += 1
-            else:
-                if not horizontal:
-                    if m_tablero.es_vertical(letras_ingresadas,event,lugares_usados_temp):
-                        vertical = True # Si suma o resta 1 a las columnas, vertical = true
-                        m_tablero.agregar_letra(lugares_usados_total,backup_text,event,escribir,lugares_usados_temp,palabra,boton_de_la_letra,window,pos_atril_usadas)                
-                        cambiar = False
-                        letras_ingresadas += 1
-                if not vertical:
-                    if m_tablero.es_horizontal(letras_ingresadas,event,lugares_usados_temp):
-                        horizontal = True
-                        m_tablero.agregar_letra(lugares_usados_total,backup_text,event,escribir,lugares_usados_temp,palabra,boton_de_la_letra,window,pos_atril_usadas)
-                        cambiar = False
-                        letras_ingresadas += 1
-        
-            # SE BORRA LA LETRA USADA
-        if not cambiar: # si cambiar pasa a false, es porque ya puso una letra en el atril.
-            #print(boton_de_la_letra)
-            window[boton_de_la_letra].update("---")
     
-    #AGARRO DEL ATRIL
-    if m_tablero.es_letra_atril(event):
-        #escribir = event[0] # ahora no puedo agarrar directamente de event el texto del boton. 
-        if event not in pos_atril_usadas: # para que no se puedan agarrar los "---"
-            escribir = window.Element(event).GetText()
-            cambiar = True
-            boton_de_la_letra = event # Con esto puedo acceder al botón de la letra usada // ahora es un integer.
-
-    #CHEQUEO DE PALABRA
-    if m_tablero.ingreso_palabra(letras_ingresadas,event):
-        to_string = ''.join(palabra) # paso lista palabra a string
-        if not m_buscador.buscar_palabra(to_string):
-            m_tablero.quitar_letras(lugares_usados_temp,backup_text,window)
-            m_tablero.devolver_letras_atril(palabra,pos_atril_usadas,window)
+    #SI ES EL TURNO DEL JUGADOR
+    if turno_jugador:
+    
+        if m_tablero.puedo_cambiar(cambiar,event,lugares_usados_temp,lugares_usados_total):  
             
-            # reset de variables:
-            pos_atril_usadas = []
-            horizontal = False
-            vertical = False
-            backup_text = []
-            letras_ingresadas = 0
-            for tupla in lugares_usados_temp:
-                lugares_usados_total.remove(tupla) # quito valores de temp que estan en total.
-            lugares_usados_temp = []
-            palabra = []
-            cambiar = False
-        else:
-            puntos_actuales = m_tablero.calcular_puntos(palabra,lugares_usados_temp,valores_letras)
-            puntos_jugador = puntos_jugador + puntos_actuales
-            m_tablero.agregar_pal_y_pun_a_pantalla(to_string,0,puntos_actuales,window)
-            m_tablero.actualizar_puntos(0,window,puntos_jugador)
-            m_tablero.dar_nuevas_letras(Letras,pos_atril_usadas,window)
-            pos_atril_usadas = []
-            horizontal = False
-            vertical = False
-            backup_text = []
-            letras_ingresadas = 0
-            lugares_usados_temp = []
-            palabra = []
-            cambiar = False
-    #print(palabra) 
+        #INGRESAR PRIMERA LETRA
+            if not lugares_usados_total: # Si lugares usados es vacio, solo permito ingresar en inicio.
+                if event == INICIO:
+                    m_tablero.agregar_letra(lugares_usados_total,backup_text,event,escribir,lugares_usados_temp,palabra,boton_de_la_letra,window,pos_atril_usadas)  
+                    cambiar = False
+                    letras_ingresadas += 1
+            else:
+                #DETERMINAR SI SE INGRESA HORIZONTAL O VERTICAL
+                #print(horizontal)
+                if not lugares_usados_temp:
+                    m_tablero.agregar_letra(lugares_usados_total,backup_text,event,escribir,lugares_usados_temp,palabra,boton_de_la_letra,window,pos_atril_usadas)
+                    cambiar = False
+                    letras_ingresadas += 1
+                else:
+                    if not horizontal:
+                        if m_tablero.es_vertical(letras_ingresadas,event,lugares_usados_temp):
+                            vertical = True # Si suma o resta 1 a las columnas, vertical = true
+                            m_tablero.agregar_letra(lugares_usados_total,backup_text,event,escribir,lugares_usados_temp,palabra,boton_de_la_letra,window,pos_atril_usadas)                
+                            cambiar = False
+                            letras_ingresadas += 1
+                    if not vertical:
+                        if m_tablero.es_horizontal(letras_ingresadas,event,lugares_usados_temp):
+                            horizontal = True
+                            m_tablero.agregar_letra(lugares_usados_total,backup_text,event,escribir,lugares_usados_temp,palabra,boton_de_la_letra,window,pos_atril_usadas)
+                            cambiar = False
+                            letras_ingresadas += 1
+            
+                # SE BORRA LA LETRA USADA
+            if not cambiar: # si cambiar pasa a false, es porque ya puso una letra en el atril.
+                #print(boton_de_la_letra)
+                window[boton_de_la_letra].update("---")
+        
+        #AGARRO DEL ATRIL
+        if m_tablero.es_letra_atril(event):
+            #escribir = event[0] # ahora no puedo agarrar directamente de event el texto del boton. 
+            if event not in pos_atril_usadas: # para que no se puedan agarrar los "---"
+                escribir = window.Element(event).GetText()
+                cambiar = True
+                boton_de_la_letra = event # Con esto puedo acceder al botón de la letra usada // ahora es un integer.
+    
+        #CHEQUEO DE PALABRA
+        if m_tablero.ingreso_palabra(letras_ingresadas,event):
+            to_string = ''.join(palabra) # paso lista palabra a string
+            if not m_buscador.buscar_palabra(to_string):
+                m_tablero.quitar_letras(lugares_usados_temp,backup_text,window)
+                m_tablero.devolver_letras_atril(palabra,pos_atril_usadas,window)
+                
+                # reset de variables:
+                pos_atril_usadas = []
+                horizontal = False
+                vertical = False
+                backup_text = []
+                letras_ingresadas = 0
+                for tupla in lugares_usados_temp:
+                    lugares_usados_total.remove(tupla) # quito valores de temp que estan en total.
+                lugares_usados_temp = []
+                palabra = []
+                cambiar = False
+            else:
+                turno_jugador = False
+                puntos_actuales = m_tablero.calcular_puntos(palabra,lugares_usados_temp,valores_letras)
+                puntos_jugador += puntos_actuales
+                m_tablero.agregar_pal_y_pun_a_pantalla(to_string,0,puntos_actuales,window)
+                m_tablero.actualizar_puntos(0,window,puntos_jugador)
+                m_tablero.dar_nuevas_letras(Letras,pos_atril_usadas,window)
+                pos_atril_usadas = []
+                horizontal = False
+                vertical = False
+                backup_text = []
+                letras_ingresadas = 0
+                lugares_usados_temp = []
+                palabra = []
+                cambiar = False
+        #print(palabra)
+    
+    #SI ES EL TURNO DE LA MÁQUINA
+    else:
+        turno_jugador = True
+        palabra_maquina = str(m_maquina.devolver_palabra(m_maquina.letras_de_maquina)) # Sin str lo considera NoneType
+        posiciones_para_la_maquina = m_maquina.encontrar_lugar(lugares_usados_total,len(palabra_maquina))
+        puntos_actuales = m_tablero.calcular_puntos(palabra_maquina,posiciones_para_la_maquina,valores_letras)
+        puntos_maquina += puntos_actuales
+        pos = 0                              
+        for letra in palabra_maquina:
+            window[posiciones_para_la_maquina[pos]].update(letra)
+            pos += 1
+        m_tablero.agregar_pal_y_pun_a_pantalla(palabra_maquina,1,puntos_actuales,window)
+        m_tablero.actualizar_puntos(1,window,puntos_maquina)
+        lugares_usados_total.extend(posiciones_para_la_maquina)
+        m_maquina.cambiar_letras_usadas_por_nuevas(palabra_maquina)
+    print(lugares_usados_total)
+        
 window.close()
 
