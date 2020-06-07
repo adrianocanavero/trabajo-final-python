@@ -1,4 +1,3 @@
-# Agrego esta línea para probar
 import PySimpleGUI as sg
 from random import choice
 import m_buscador
