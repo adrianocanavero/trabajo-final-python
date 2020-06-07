@@ -24,11 +24,11 @@ def crear_boton(i,j,AN,AL):
         return sg.Button("INICIO", size=(AN, AL), key=(i,j), pad=(0,0))
     return sg.Button("?", size=(AN, AL), key=(i,j), pad=(0,0))
 
-def actualizar_puntos(a_quien_actualizar,window,puntos_jugador):
+def actualizar_puntos(a_quien_actualizar,window,puntos):
     if a_quien_actualizar == 0: # Cero = Jugador / Uno = Máquina
-        window[(888,0)].update("PUNTOS\n"+str(puntos_jugador))
+        window[(888,0)].update("PUNTOS\n"+str(puntos))
     else:
-        window[(888,1)].update("PUNTOS\n"+str(puntos_maquina))
+        window[(888,1)].update("PUNTOS\n"+str(puntos))
         
 def calcular_puntos(palabra,lugares_usados,valores_letras):
     lugares_usados.reverse()
@@ -37,6 +37,7 @@ def calcular_puntos(palabra,lugares_usados,valores_letras):
     triplicar_la_palabra = False # Hay que asegurarse que solo se pueda caer en un triplicar puntos por palabra a la vez
     duplicar_la_palabra = False # Hay que asegurarse que solo se pueda caer en un duplicar puntos por palabra a la vez
     for letra in palabra:
+        print("EL VALOR DE LA LETRA ES " + str(valores_letras[letra]))
         if (m_fichas.triplicar_palabra(lugares_usados[posicion][0],lugares_usados[posicion][1])):
             triplicar_la_palabra = True
         elif (m_fichas.duplicar_palabra(lugares_usados[posicion][0],lugares_usados[posicion][1])):
