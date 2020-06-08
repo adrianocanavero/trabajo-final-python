@@ -79,10 +79,10 @@ def quitar_letras(lugares_usados,backup_text,window):
         window[tupla].update(backup_text[i])
         i+=1
 
-def agregar_letra(lugares_usados_total,backup_text,event,escribir,lugares_usados_temp,palabra,boton_de_la_letra,window,pos_atril_usadas):
+def agregar_letra(lugares_usados_total,backup_text,event,escribir,save,lugares_usados_temp,palabra,boton_de_la_letra,window,pos_atril_usadas):
     backup_text.insert(0,window.Element(event).GetText()) # guardo texto que habia en el boton  
     window[event].update(escribir) #event = posición del botón tocado (dado por key=(i,j)), si agarro del atril es una letra.
-
+    save[event] = escribir
     lugares_usados_total.append(event)
     lugares_usados_temp.insert(0,event) # Agrega elementos a lista[0] corriendo los demas. ultimo elem = pos 0 siempre.
     palabra.append(escribir)
@@ -115,12 +115,14 @@ def palabras_por_turno_pantalla(jug_o_maq,clave):
     return sg.Button(size=(8, 2), key=(jug_o_maq,clave), pad=(0,0),visible=False)
     
 
-def agregar_pal_y_pun_a_pantalla(palabra_en_string,jug_o_maq,puntos,window):
+def agregar_pal_y_pun_a_pantalla(palabra_en_string,jug_o_maq,puntos,window,save):
     if jug_o_maq == 0: 
         global posicion_jugador
         window[444,posicion_jugador].update(palabra_en_string+"\n"+str(puntos),visible=True) 
+        save[444,posicion_jugador] = palabra_en_string+"\n"+str(puntos)
         posicion_jugador += 1 
     else:
         global posicion_maquina
         window[445,posicion_maquina].update(palabra_en_string+"\n"+str(puntos),visible=True)
+        save[445,posicion_maquina] = palabra_en_string+"\n"+str(puntos)
         posicion_maquina += 1
