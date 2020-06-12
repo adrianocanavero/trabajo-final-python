@@ -1,5 +1,5 @@
 from m_buscador import buscar_palabra
-from itertools import combinations
+from itertools import permutations,combinations
 from m_tablero import tomar_y_borrar
 from m_fichas import valores_letras
 from random import choice
@@ -7,30 +7,36 @@ from random import randrange
 
 def devolver_palabra(letras_de_maquina):
     print('devuelve primer palabra que encuentra')
-    for i in range (2, len(letras_de_maquina)+1): # arranca desde 2
+    encontre = False
+    for i in reversed(range (2, len(letras_de_maquina)+1)): # arranca desde 2
         combinations_list= list(combinations(letras_de_maquina, i))
         for tupla in combinations_list:
             to_string = ''.join(tupla)
             if buscar_palabra(to_string):
+                encontre = True
                 return to_string
-                break
+    if not encontre:
+        return 'No encontre palabra'
 
 def palabra_maxima(letras_de_maquina,valores_letras):
     print('devuelve maxima palabra')
     max = 0
     sum = 0
     palabra_max = ''
-    for i in range (2, len(letras_de_maquina)+1): 
+    encontre = False
+    for i in range(2, len(letras_de_maquina)+1): 
         combinations_list= list(combinations(letras_de_maquina, i))
         for tupla in combinations_list:
             to_string = ''.join(tupla)
             if buscar_palabra(to_string):
+                encontre = True
                 for char in to_string:
                     sum += valores_letras[char]
                 if sum>max:
                     palabra_max = to_string
                     max = sum
-    return palabra_max    
+    if encontre: return palabra_max  
+    else: return 'No encontre palabra'  
                      
 def encontrar_lugar(lugares_usados_total,cantidad):
     
