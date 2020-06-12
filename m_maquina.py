@@ -1,11 +1,11 @@
 from m_buscador import buscar_palabra
-from itertools import permutations,combinations
+from itertools import combinations
 from m_tablero import tomar_y_borrar
 from m_fichas import valores_letras
 from random import choice
 from random import randrange
 
-def devolver_palabra(letras_de_maquina):
+def devolver_palabra():
     print('devuelve primer palabra que encuentra')
     encontre = False
     for i in reversed(range (2, len(letras_de_maquina)+1)): # arranca desde 2
@@ -18,7 +18,7 @@ def devolver_palabra(letras_de_maquina):
     if not encontre:
         return 'No encontre palabra'
 
-def palabra_maxima(letras_de_maquina,valores_letras):
+def palabra_maxima(valores_letras):
     print('devuelve maxima palabra')
     max = 0
     sum = 0
@@ -82,7 +82,7 @@ def encontrar_lugar(lugares_usados_total,cantidad):
                 encontre = True
     return lugares_a_usar
 
-def cambiar_letras_usadas_por_nuevas(palabra_maquina):
+def cambiar_letras_usadas_por_nuevas(palabra_maquina,Letras):
     letras_a_reponer = 0
     for letra in palabra_maquina: # Saca las letras usadas
         letras_a_reponer += 1
@@ -90,17 +90,13 @@ def cambiar_letras_usadas_por_nuevas(palabra_maquina):
     for x in range(letras_a_reponer): # Repone las letras faltantes
         letras_de_maquina.append(tomar_y_borrar(Letras))
 
+def inicializar_letras_maquina(Letras):
+    for j in range(cant_letras):
+        letras_de_maquina.append(tomar_y_borrar(Letras))
+
 cant_letras = 7
 
-creando_letras = [['A']*11,['B']*3,['C']*4,['D']*4,['E']*11,['F']*2,['G']*2,['H']*2,['I']*6,['J']*2,['K']*2,['L']*4,['M']*3,['N']*5,
-            ['Ñ']*2,['O']*8,['P']*2,['Q']*2,['R']*4,['S']*7,['T']*4,['U']*6,['V']*2,['W']*2,'X',['Y']*2,'Z']
-
-Letras = [elem for sublist in creando_letras for elem in sublist] #hace que creando_letras sea una sola lista.
-
 letras_de_maquina = []
-
-for j in range(cant_letras):
-    letras_de_maquina.append(tomar_y_borrar(Letras))
 
 #print(devolver_palabra(letras_de_maquina))
 
