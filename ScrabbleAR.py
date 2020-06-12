@@ -5,6 +5,7 @@ import m_tablero
 from m_fichas import valores_letras
 import m_maquina
 import pickle
+
 def main(hay_save):
 
     def guardar(save,lugares_usados_total,lugares_usados_temp,window,pos_atril_usadas,
@@ -43,7 +44,8 @@ def main(hay_save):
             if event in (None, 'No'):
                 break
         window2.close()
-    ## Intento abrir archivo. 
+    
+    # Intento abrir archivo. 
     if (hay_save): 
         try:
             archivo_save = open('savewindow.pickle', 'rb')
@@ -72,7 +74,8 @@ def main(hay_save):
                 ['Ñ']*2,['O']*8,['P']*2,['Q']*2,['R']*4,['S']*7,['T']*4,['U']*6,['V']*2,['W']*2,'X',['Y']*2,'Z']
 
     Letras = [elem for sublist in creando_letras for elem in sublist] #hace que creando_letras sea una sola lista.
-
+    
+    m_maquina.inicializar_letras_maquina(Letras) # Le da 7 letras a la máquina
 
     # El primer elemento de key es 999 para identificar que es una ficha de la maquina y que no pase nada si el jugador aprieta ahí
     tablero = [[sg.Button(size=(AN, AL), key=(999,j), pad=(21.5,18)) for j in range(cant_letras)]]
@@ -92,7 +95,7 @@ def main(hay_save):
 
     window = sg.Window('ScrabbleAR',layout)
 
-     #Variables del juego
+    #Variables del juego
     if hay_save: # aca cargo todos los datos
         save = save_window # si hay save pongo en save lo que hay en verificar_guardado.
         lugares_usados_temp = datos_usuario['lug_temp']
@@ -236,22 +239,23 @@ def main(hay_save):
         #SI ES EL TURNO DE LA MÁQUINA
         else:
             turno_jugador = True
-            palabra_maquina = str(m_maquina.devolver_palabra(m_maquina.letras_de_maquina)) # Sin str lo considera NoneType
-            posiciones_para_la_maquina = m_maquina.encontrar_lugar(lugares_usados_total,len(palabra_maquina))
-            puntos_actuales = m_tablero.calcular_puntos(palabra_maquina,posiciones_para_la_maquina,valores_letras)
-            puntos_maquina += puntos_actuales
-            pos = 0                              
-            for letra in palabra_maquina:
-                window[posiciones_para_la_maquina[pos]].update(letra)
-                save[posiciones_para_la_maquina[pos]] = letra
-                pos += 1
-            m_tablero.agregar_pal_y_pun_a_pantalla(palabra_maquina,1,puntos_actuales,window,save)
-            m_tablero.actualizar_puntos(1,window,puntos_maquina)
-            lugares_usados_total.extend(posiciones_para_la_maquina)
-            m_maquina.cambiar_letras_usadas_por_nuevas(palabra_maquina)
+            palabra_maquina = str(m_maquina.devolver_palabra()) # Sin str lo considera NoneType
+            if palabra_maquina != 'No encontre palabra':
+                posiciones_para_la_maquina = m_maquina.encontrar_lugar(lugares_usados_total,len(palabra_maquina))
+                puntos_actuales = m_tablero.calcular_puntos(palabra_maquina,posiciones_para_la_maquina,valores_letras)
+                puntos_maquina += puntos_actuales
+                pos = 0                              
+                for letra in palabra_maquina:
+                    window[posiciones_para_la_maquina[pos]].update(letra)
+                    save[posiciones_para_la_maquina[pos]] = letra
+                    pos += 1
+                m_tablero.agregar_pal_y_pun_a_pantalla(palabra_maquina,1,puntos_actuales,window,save)
+                m_tablero.actualizar_puntos(1,window,puntos_maquina)
+                lugares_usados_total.extend(posiciones_para_la_maquina)
+                m_maquina.cambiar_letras_usadas_por_nuevas(palabra_maquina,Letras)
         #print(lugares_usados_total)
             
     window.close()
 
 if __name__ == '__main__':
-    main(True)  
+    main(False)  
