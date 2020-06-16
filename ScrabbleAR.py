@@ -5,45 +5,35 @@ import m_tablero
 from m_fichas import valores_letras
 import m_maquina
 import pickle
+from m_menu import menu
 
 def main(hay_save):
 
     def guardar(save,lugares_usados_total,lugares_usados_temp,window,pos_atril_usadas,
-                letras_ingresadas,palabra,backup_text,horizontal,vertical,puntos_jugador, puntos_maquina,Letras):
-        layout2 = [[sg.Text('¿Desea guardar la partida?')],           
-                    [sg.Button('Si',size =(5,3)), sg.Button('No',size =(5,3))]]
-        window2 = sg.Window('Guardar',layout2)
-        while True:
-            event, values = window2.read()
-            if event == 'Si':
-                for i in range (7):
-                    save[i] = window[i].GetText()
-                archivo_save = open('savewindow.pickle', 'wb')
-                pickle.dump(save,archivo_save)
-                archivo_save.close()
-                archivo_save = open('datos_usuario.pickle', 'wb')
-                datos_usuario ={'lug_tot': lugares_usados_total,
-                                'lug_temp':lugares_usados_temp,
-                                'pos_at': pos_atril_usadas,
-                                'let_ing': letras_ingresadas,
-                                'pal': palabra,
-                                'back_txt': backup_text,
-                                'hor': horizontal,
-                                'ver': vertical,
-                                'letras': Letras, 
-                                'pj': puntos_jugador,
-                                'pm': puntos_maquina,
-                                'pos_jug': m_tablero.posicion_jugador,
-                                'pos_maq': m_tablero.posicion_maquina,
-                                'let_maq': m_maquina.Letras,
-                                'atril_maq': m_maquina.letras_de_maquina
-                                }
-                pickle.dump(datos_usuario,archivo_save)
-                archivo_save.close()
-                break
-            if event in (None, 'No'):
-                break
-        window2.close()
+                letras_ingresadas,palabra,backup_text,horizontal,vertical,puntos_jugador,puntos_maquina,Letras):
+        for i in range (7):
+            save[i] = window[i].GetText()
+        archivo_save = open('savewindow.pickle', 'wb')
+        pickle.dump(save,archivo_save)
+        archivo_save.close()
+        archivo_save = open('datos_usuario.pickle', 'wb')
+        datos_usuario ={'lug_tot': lugares_usados_total,
+                        'lug_temp':lugares_usados_temp,
+                        'pos_at': pos_atril_usadas,
+                        'let_ing': letras_ingresadas,
+                        'pal': palabra,
+                        'back_txt': backup_text,
+                        'hor': horizontal,
+                        'ver': vertical,
+                        'letras': Letras, 
+                        'pj': puntos_jugador,
+                        'pm': puntos_maquina,
+                        'pos_jug': m_tablero.posicion_jugador,
+                        'pos_maq': m_tablero.posicion_maquina,
+                        'atril_maq': m_maquina.letras_de_maquina
+                        }
+        pickle.dump(datos_usuario,archivo_save)
+        archivo_save.close()
     
     # Intento abrir archivo. 
     if (hay_save): 
@@ -82,7 +72,7 @@ def main(hay_save):
     tablero.extend([[m_tablero.crear_boton(i,j,AN,AL) for j in range(filas)] for i in range(filas)])
     tablero.extend([[sg.Text("Seleccione una letra de abajo",pad=(200,5))],
         [sg.Button(m_tablero.tomar_y_borrar(Letras), key = j, size=(AN, AL), pad=(21.5,0)) for j in range(cant_letras)],
-        [sg.Button('Ingresar Palabra!', size= (7,3), pad=(112,20)),sg.Button('Terminar', size=(7, 3), pad=(112,20))]])
+        [sg.Button('Ingresar Palabra!', size= (7,3), pad=(64.4,20)),sg.Button('Posponer', size=(7, 3), pad=(64.4,20)),sg.Button('Terminar', size=(7, 3), pad=(64.4,20))]])
 
     # \n pone lo que sigue un renglón más abajo  
     zona_puntos_jugador = [[sg.Button("PUNTOS\n"+str(puntos_jugador), size=(8, 4), key=(888,0), pad=(0,340))]]
@@ -111,7 +101,6 @@ def main(hay_save):
         puntos_maquina = datos_usuario['pm']
         m_tablero.posicion_maquina = datos_usuario['pos_maq']
         m_tablero.posicion_jugador = datos_usuario['pos_jug']
-        m_maquina.Letras = datos_usuario['let_maq']
         m_maquina.letras_de_maquina = datos_usuario['atril_maq']
         turno_jugador = True # si se carga la partida siempre es el turno del jugador.
     else:
@@ -145,10 +134,13 @@ def main(hay_save):
         #print(pos_atril_usadas)
         #print(backup_text)
         #print(event)
-        if event in (None, 'Terminar'):
+        
+        if event == 'Posponer':
             guardar(save,lugares_usados_total,lugares_usados_temp,window,pos_atril_usadas,
-                    letras_ingresadas,palabra,backup_text,horizontal,vertical,puntos_jugador, 
-                    puntos_maquina,Letras)
+                letras_ingresadas,palabra,backup_text,horizontal,vertical,puntos_jugador, 
+                puntos_maquina,Letras)
+        
+        if event in (None,'Terminar',"Posponer"):
             break
         
         #SI ES EL TURNO DEL JUGADOR
@@ -257,5 +249,12 @@ def main(hay_save):
             
     window.close()
 
-if __name__ == '__main__':
-    main(False)  
+opcion_elegida = menu()
+if opcion_elegida == 'Nueva partida':
+    main(False)
+elif opcion_elegida == 'Cargar partida':
+    main(True)
+elif opcion_elegida == 'Configurar':
+    print("NO ESTÁ IMPLEMENTADO TODAVÍA")
+elif opcion_elegida == 'Top ten\npuntajes':
+    print("NO ESTÁ IMPLEMENTADO TODAVÍA")
