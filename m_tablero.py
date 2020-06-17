@@ -61,7 +61,7 @@ def calcular_puntos(palabra,lugares_usados,valores_letras):
 
 def puedo_cambiar(cambiar,event,lugares_usados_temp,lugares_usados_total):
     # Se chequea si no es integer para que no cambie las letras.
-    return cambiar and isinstance(event, int) == False and event not in lugares_usados_total
+    return cambiar and isinstance(event, int) == False and event != '__TIMEOUT__' and event not in lugares_usados_total
 
 def es_vertical(letras_ingresadas,event,lugares_usados):
     return letras_ingresadas <7 and event == (lugares_usados[0][0]+1, lugares_usados[0][1])
