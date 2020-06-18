@@ -14,9 +14,9 @@ def menu():
         hay_partida_guardada = False
             
     if hay_partida_guardada:
-        layout = [[sg.Button('Nueva partida',size =(10,5)), sg.Button('Cargar partida',size =(10,5)), sg.Button('Configurar',size =(10,5)), sg.Button('Top ten\npuntajes',size =(10,5))]]
+        layout = [[sg.Button('Nueva partida',size =(10,5)), sg.Button('Cargar partida',size =(10,5)), sg.Button('Configurar',size =(10,5)), sg.Button('Top ten\npuntajes',size =(10,5)),sg.Button('Salir',size =(10,5))]]
     else:
-        layout = [[sg.Button('Nueva partida',size =(10,5)), sg.Button('Configurar',size =(10,5)), sg.Button('Top ten\npuntajes',size =(10,5))]]
+        layout = [[sg.Button('Nueva partida',size =(10,5)), sg.Button('Configurar',size =(10,5)), sg.Button('Top ten\npuntajes',size =(10,5)),sg.Button('Salir',size =(10,5))]]
     window = sg.Window('Menú principal',layout)
     event, values = window.read()
     window.close()
