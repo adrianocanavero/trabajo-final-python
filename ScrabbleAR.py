@@ -94,7 +94,7 @@ def main(hay_save):
     tablero.extend([[sg.Text("Seleccione una letra de abajo",pad=(200,5))],
         [sg.Button(m_tablero.tomar_y_borrar(Letras), key = j, size=(AN, AL), pad=(21.5,0)) for j in range(cant_letras)],
         [sg.Button('Ingresar Palabra!', size= (7,3), pad=(64.4,20)),sg.Button('Posponer', size=(7, 3), pad=(64.4,20)),sg.Button('Terminar', size=(7, 3), pad=(64.4,20))]])
-    tablero.extend([[sg.Text('Tiempo',key='timer')]])
+    tablero.extend([[sg.Text('Tiempo',key='timer',pad=(270,0))]])
 
     # \n pone lo que sigue un renglón más abajo  
     zona_puntos_jugador = [[sg.Button("PUNTOS\n"+str(puntos_jugador), size=(8, 4), key=(888,0), pad=(0,340))]]
@@ -288,12 +288,15 @@ def main(hay_save):
             
     window.close()
 
-opcion_elegida = menu()
-if opcion_elegida == 'Nueva partida':
-    main(False)
-elif opcion_elegida == 'Cargar partida':
-    main(True)
-elif opcion_elegida == 'Configurar':
-    print("NO ESTÁ IMPLEMENTADO TODAVÍA")
-elif opcion_elegida == 'Top ten\npuntajes':
-    print("NO ESTÁ IMPLEMENTADO TODAVÍA")
+while True:
+    opcion_elegida = menu()
+    if opcion_elegida == 'Nueva partida':
+        main(False)
+    elif opcion_elegida == 'Cargar partida':
+        main(True)
+    elif opcion_elegida == 'Configurar':
+        print("NO ESTÁ IMPLEMENTADO TODAVÍA")
+    elif opcion_elegida == 'Top ten\npuntajes':
+        print("NO ESTÁ IMPLEMENTADO TODAVÍA")
+    else:
+        break
