@@ -6,28 +6,77 @@ from m_fichas import valores_letras
 import m_maquina
 import pickle
 import time
-from m_menu import menu
+from m_menu import menu, top_puntajes
+import winsound
 
 def main(hay_save):
 
-    def mostrar_puntaje(razon_fin,puntos_jugador,puntaje_maquina,window,letras_maquina):
+    def ganar(total_jugador,total_maquina):
+        win_layout = [[sg.Text('¡Ganaste!',font= 'Any 16',size =(25,1), justification='center')],
+                        [sg.Text('Puntaje PC: ' + str(total_maquina)), sg.Text('Puntaje jugador: ' + str(total_jugador))],
+                        [sg.Text('Ingresa tu nombre:')],
+                        [sg.InputText()],
+                        [sg.Button('Guardar Puntaje')]]
+        win_window = sg.Window('Scrabble AR',win_layout,keep_on_top=True)
+        try:
+            winsound.PlaySound('ganar.wav', winsound.SND_ASYNC)
+        except:
+            pass
+        while True:
+            e,v = win_window.read()
+            if e == 'Guardar Puntaje' and v[0]!='Ingresa tu nombre:':
+                archivo_topten = open('top_ten.txt', 'a') #si no existe arch, crea. si existe, agrega al final.
+                archivo_topten.write(v[0] + ': ' + str(total_jugador) + '\n')
+                archivo_topten.close()
+                break
+            if e == None:
+                break
+        win_window.close()
+
+    def mostrar_puntaje(razon_fin,puntos_jugador,puntaje_maquina,window,letras_maquina,valores_letras):
+
+        def calcularResta(lista_letras, valores_letras):
+            puntaje_restar = 0
+            for letra in lista_letras:
+                puntaje_restar+= valores_letras[letra]
+            return puntaje_restar
         letras_atril = []
+
         for i in range(cant_letras):
             if window[i].GetText() != '---':
                 letras_atril.append(window[i].GetText())
-        layout_atril_jugador = [[sg.Text('Tus letras')], [sg.Button(m_tablero.tomar_y_borrar(letras_atril), key = j, size=(AN, AL), pad=(21.5,0)) for j in range(len(letras_atril))],
-                                [sg.Text('Puntaje a restar :')]]
-        layout_atril_maquina = [[sg.Text('Letras de PC')],[sg.Button(m_tablero.tomar_y_borrar(letras_maquina), key = j, size=(AN, AL), pad=(21.5,0)) for j in range(len(letras_maquina))],
-                                [sg.Text('Puntaje a restar :')]]
-        
-        layout_final = [[sg.Column(layout_atril_jugador)], [sg.Column(layout_atril_maquina)], [sg.Button('Salir')]]
 
-        window_final = sg.Window(razon_fin,layout_final)
+        resta_jugador = calcularResta(letras_atril,valores_letras)
+        resta_maquina = calcularResta(letras_maquina,valores_letras)
+
+        layout_atril_jugador = [[sg.Text('Tus letras')], [sg.Button(m_tablero.tomar_y_borrar(letras_atril), key = j, size=(AN, AL), pad=(21.5,0)) for j in range(len(letras_atril))],
+                                [sg.Text('Puntaje a restar : ' + str(resta_jugador))]]
+        layout_atril_maquina = [[sg.Text('Letras de PC')],[sg.Button(m_tablero.tomar_y_borrar(letras_maquina), key = j, size=(AN, AL), pad=(21.5,0)) for j in range(len(letras_maquina))],
+                                [sg.Text('Puntaje a restar : ' + str(resta_maquina))]]
+        
+        layout_final = [[sg.Column(layout_atril_jugador)], [sg.Column(layout_atril_maquina)], [sg.Button('Siguiente')]]
+
+        window_final = sg.Window(razon_fin,layout_final,keep_on_top=True) #se mantiene siempre arriba del tablero
         while True:
-            event,values = window_final.read()
-            if event in (None, 'Salir'):
+            evento,values = window_final.read()
+            if evento == None:
+                window_final.close() # lo hago para que no se vea esta pantalla atras del cartel de ganar
                 break
-        window.close()
+            if evento == 'Siguiente':
+                total_maquina = puntos_maquina - resta_maquina
+                total_jugador = puntos_jugador - resta_jugador
+                if total_jugador> total_maquina:
+                    window_final.close()
+                    ganar(total_jugador,total_maquina)
+                    break
+                elif total_jugador<total_maquina:
+                    window_final.close()
+                    #perder(total_jugador,total_maquina)
+                    break
+                else:
+                    window_final.close()
+                    #empate(total_jugador)
+                    break
     
     def guardar(save,lugares_usados_total,lugares_usados_temp,window,pos_atril_usadas,
                 letras_ingresadas,palabra,backup_text,horizontal,vertical,puntos_jugador,puntos_maquina,Letras,tiempo_actual):
@@ -141,7 +190,7 @@ def main(hay_save):
         turno_jugador = choice([True, False])
     cambiar = False
 
-    TIEMPO = 120 # tiempo de juego en secs
+    TIEMPO = 7 # tiempo de juego en secs
     # WINDOW LOOP
 
     while True:
@@ -161,7 +210,10 @@ def main(hay_save):
 
         if (tiempo_actual >= TIEMPO):
             razon_fin = '¡Terminó el tiempo!'
-            mostrar_puntaje(razon_fin,puntos_jugador,puntos_maquina,window,m_maquina.letras_de_maquina)
+            if palabra:
+                m_tablero.quitar_letras(lugares_usados_temp,backup_text,window)
+                m_tablero.devolver_letras_atril(palabra,pos_atril_usadas,window) # te devuelve letras si justo estabas metiendo en el tablero y se termino el tiempo
+            mostrar_puntaje(razon_fin,puntos_jugador,puntos_maquina,window,m_maquina.letras_de_maquina,valores_letras)
             break
 
         if event == 'Posponer':
@@ -251,7 +303,7 @@ def main(hay_save):
                         m_tablero.dar_nuevas_letras(Letras,pos_atril_usadas,window) # si index error = lista vacia
                     except IndexError:
                         razon_fin = ('Se terminaron las fichas!')
-                        mostrar_puntaje(razon_fin,puntos_jugador,puntos_maquina,window,m_maquina.letras_de_maquina)
+                        mostrar_puntaje(razon_fin,puntos_jugador,puntos_maquina,window,m_maquina.letras_de_maquina,valores_letras)
                         break
                     pos_atril_usadas = []
                     horizontal = False
@@ -297,6 +349,6 @@ while True:
     elif opcion_elegida == 'Configurar':
         print("NO ESTÁ IMPLEMENTADO TODAVÍA")
     elif opcion_elegida == 'Top ten\npuntajes':
-        print("NO ESTÁ IMPLEMENTADO TODAVÍA")
+        top_puntajes()
     else:
         break
