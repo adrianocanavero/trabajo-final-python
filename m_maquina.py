@@ -6,6 +6,10 @@ from random import choice
 from random import randrange
 
 def devolver_palabra():
+
+    """Retorna una palabra dada la lista de letras que posee el atril de la maquina, en caso de no encontrar,
+        retorna 'No encontre palabra'."""
+
     print('devuelve primer palabra que encuentra')
     encontre = False
     for i in reversed(range (2, len(letras_de_maquina)+1)): # arranca desde 2
@@ -19,6 +23,8 @@ def devolver_palabra():
         return 'No encontre palabra'
 
 def palabra_maxima(valores_letras):
+    """Metodo pensado para implementar en un nivel con mayor dificultad"""
+
     print('devuelve maxima palabra')
     max = 0
     sum = 0
@@ -40,6 +46,8 @@ def palabra_maxima(valores_letras):
                      
 def encontrar_lugar(lugares_usados_total,cantidad):
     
+    """Busca un espacio acorde a la cantidad de letras que tiene la palabra que va a ingresar la AI"""
+
     # SI EL (7,7) ESTÁ LIBRE (O SEA EMPIEZA LA MÁQUINA) LOS LUGARES A USAR VAN A ESTAR VERTICAL U HORIZONTALMENTE DESDE (7,7)
     if (7,7) not in lugares_usados_total:
         lugares_a_usar = []
@@ -83,6 +91,10 @@ def encontrar_lugar(lugares_usados_total,cantidad):
     return lugares_a_usar
 
 def cambiar_letras_usadas_por_nuevas(palabra_maquina,Letras):
+
+    """Remueve del atril de la maquina las letras que utilizó para formar una palabra y
+        le da letras nuevas"""
+
     letras_a_reponer = 0
     for letra in palabra_maquina: # Saca las letras usadas
         letras_a_reponer += 1
@@ -91,6 +103,9 @@ def cambiar_letras_usadas_por_nuevas(palabra_maquina,Letras):
         letras_de_maquina.append(tomar_y_borrar(Letras))
 
 def inicializar_letras_maquina(Letras):
+
+    """Da las letras iniciales de la maquina cuando se comienza una nueva partida""" 
+    
     for j in range(cant_letras):
         letras_de_maquina.append(tomar_y_borrar(Letras))
 

@@ -11,7 +11,12 @@ import winsound
 
 def main(hay_save):
 
+    """ Funcion main: ejecuta el juego debidamente. Recibe True si el jugador eligio Nueva Partida o False si
+        el jugador eligió Cargar Partida"""
+        
     def ganar(total_jugador,total_maquina):
+        """Crea y muestra la ventana del ganador, y permite ingresar el puntaje para guardarlo en los top ten"""
+
         win_layout = [[sg.Text('¡Ganaste!',font= 'Any 16',size =(25,1), justification='center')],
                         [sg.Text('Puntaje PC: ' + str(total_maquina)), sg.Text('Puntaje jugador: ' + str(total_jugador))],
                         [sg.Text('Ingresa tu nombre:')],
@@ -34,6 +39,9 @@ def main(hay_save):
         win_window.close()
 
     def mostrar_puntaje(razon_fin,puntos_jugador,puntaje_maquina,window,letras_maquina,valores_letras):
+
+        """Se ejecuta luego de que termina el tiempo o se terminan las fichas. Muestra las fichas que le quedaron al jugador
+            y a la maquina y lo que van a restar del puntaje obtenido por la formación de palabras."""
 
         def calcularResta(lista_letras, valores_letras):
             puntaje_restar = 0
@@ -80,6 +88,9 @@ def main(hay_save):
     
     def guardar(save,lugares_usados_total,lugares_usados_temp,window,pos_atril_usadas,
                 letras_ingresadas,palabra,backup_text,horizontal,vertical,puntos_jugador,puntos_maquina,Letras,tiempo_actual):
+        """Guarda la información de la partida si el jugador elige Posponer. En save se encuentra la informacion del tablero,
+            mientras que en datos_usuario estan los datos indispensables que necesita el juego para realizar sus funciones"""
+
         for i in range (7):
             save[i] = window[i].GetText()
         save['timer'] = tiempo_actual
@@ -135,7 +146,6 @@ def main(hay_save):
 
     Letras = [elem for sublist in creando_letras for elem in sublist] #hace que creando_letras sea una sola lista.
     
-    m_maquina.inicializar_letras_maquina(Letras) # Le da 7 letras a la máquina
 
     # El primer elemento de key es 999 para identificar que es una ficha de la maquina y que no pase nada si el jugador aprieta ahí
     tablero = [[sg.Button(size=(AN, AL), key=(999,j), pad=(21.5,18)) for j in range(cant_letras)]]
@@ -180,6 +190,8 @@ def main(hay_save):
         save = {}
         lugares_usados_temp = []
         lugares_usados_total = []
+        m_maquina.letras_de_maquina = []
+        m_maquina.inicializar_letras_maquina(Letras) # Le da 7 letras a la máquina
         vertical = False
         horizontal = False
         letras_ingresadas = 0
@@ -190,7 +202,7 @@ def main(hay_save):
         turno_jugador = choice([True, False])
     cambiar = False
 
-    TIEMPO = 7 # tiempo de juego en secs
+    TIEMPO = 10 # tiempo de juego en secs
     # WINDOW LOOP
 
     while True:

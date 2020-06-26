@@ -6,6 +6,10 @@ posicion_jugador = 0 # Es la posición en la que hay que poner la próxima palab
 posicion_maquina = 0 # Es la posición en la que hay que poner la próxima palabra y puntaje de una jugada en concreta
 
 def crear_boton(i,j,AN,AL):
+
+    """Dependiendo del valor de (i,j) en la iteración que crea el tablero, 
+        devuelve el boton específico de esas coordenadas"""
+
     if (m_fichas.triplicar_palabra(i,j)):
         return sg.Button("TPPP", size=(AN, AL), key=(i,j), pad=(0,0))
     if (m_fichas.descuento_tres(i,j)):
@@ -25,12 +29,19 @@ def crear_boton(i,j,AN,AL):
     return sg.Button("?", size=(AN, AL), key=(i,j), pad=(0,0))
 
 def actualizar_puntos(a_quien_actualizar,window,puntos):
+
+    """Actualiza el recuadro de puntos segun el jugador que se le indique"""
+
     if a_quien_actualizar == 0: # Cero = Jugador / Uno = Máquina
         window[(888,0)].update("PUNTOS\n"+str(puntos))
     else:
         window[(888,1)].update("PUNTOS\n"+str(puntos))
         
 def calcular_puntos(palabra,lugares_usados,valores_letras):
+
+    """Calcula el valor final de la palabra segun los lugares en los que se encuentran
+        sus letras y el puntaje de cada letra"""
+
     lugares_usados.reverse()
     puntos = 0
     posicion = 0
@@ -60,25 +71,44 @@ def calcular_puntos(palabra,lugares_usados,valores_letras):
     return puntos
 
 def puedo_cambiar(cambiar,event,lugares_usados_temp,lugares_usados_total):
+
+    """Verifica que el evento reciente sea un click en el tablero para ingresar una letra"""
+
     # Se chequea si no es integer para que no cambie las letras.
     return cambiar and isinstance(event, int) == False and event != '__TIMEOUT__' and event not in lugares_usados_total
 
 def es_vertical(letras_ingresadas,event,lugares_usados):
+
+    """Confirma que el ingreso de la palabra se esta realizando verticalmente."""
+
     return letras_ingresadas <7 and event == (lugares_usados[0][0]+1, lugares_usados[0][1])
 
 def es_horizontal(letras_ingresadas,event,lugares_usados):
+
+    """Confirma que el ingreso de la palabra se esta realizando horizontalmente"""
+
     return letras_ingresadas<7 and event == (lugares_usados[0][0], lugares_usados[0][1]+1) 
     
 def es_letra_atril(event):
+
+    """Verifica que el evento reciente sea un click sobre el atril del usuario."""
+
     return isinstance(event, int) #Como ahora la key es un integer, si es integer, significa que agarro del atril.
 
 def quitar_letras(lugares_usados,backup_text,window):
+
+    """Quita las letras del tablero en el caso de que se ingrese una palabra erronea."""
+
     i = 0
     for tupla in lugares_usados:
         window[tupla].update(backup_text[i])
         i+=1
 
 def agregar_letra(lugares_usados_total,backup_text,event,escribir,save,lugares_usados_temp,palabra,boton_de_la_letra,window,pos_atril_usadas):
+
+    """Agrega una letra al tablero y efectiviza el update de la ventana.
+    Agrega las cordenadas ingresadas a save y actualiza los lugares usados"""
+
     backup_text.insert(0,window.Element(event).GetText()) # guardo texto que habia en el boton  
     window[event].update(escribir) #event = posición del botón tocado (dado por key=(i,j)), si agarro del atril es una letra.
     save[event] = escribir
@@ -88,6 +118,10 @@ def agregar_letra(lugares_usados_total,backup_text,event,escribir,save,lugares_u
     pos_atril_usadas.append(boton_de_la_letra)
 
 def ingreso_palabra(letras_ingresadas,event):
+
+    """Verifica que las letras ingresadas sean más de dos y 
+    que se haya clickeado el boton de ingresar palabra"""
+
     if letras_ingresadas>= 2:
         if letras_ingresadas == 7 or event == 'Ingresar Palabra!':
             return True
@@ -96,25 +130,42 @@ def ingreso_palabra(letras_ingresadas,event):
         return False
 
 def devolver_letras_atril(letras_usadas,pos_atril_usadas,window):
+
+    """Devuelve las letras que se usaron en una palabra incorrecta al atril."""
+
     i = 0
     for letra in letras_usadas:
         window[pos_atril_usadas[i]].update(letra)
         i+=1
 
 def dar_nuevas_letras(Letras,pos_atril_usadas,window):
+
+    """Llena el atril con la cantidad de letras necesarias"""
+
     for i in pos_atril_usadas:
         window[i].update(tomar_y_borrar(Letras))
 
 def tomar_y_borrar(Letras):
+
+    """Toma una letra de la lista de letras y la borra de la misma"""
+
     letra_retornada = choice(Letras)
     Letras.remove(letra_retornada)
     return letra_retornada
     
 def palabras_por_turno_pantalla(jug_o_maq,clave):
+
+    """Retorna el boton que muestra las palabras con sus puntajes pero invisible,
+        cuando se ingresa una palabra, se hace un update y se visibiliza"""
+
     return sg.Button(size=(8, 2), key=(jug_o_maq,clave), pad=(0,0),visible=False)
     
 
 def agregar_pal_y_pun_a_pantalla(palabra_en_string,jug_o_maq,puntos,window,save):
+
+    """Agrega al tablero las palabras ingresadas con sus respectivos puntajes. Las de las izquierda son
+        las de la maquina y las de la derecha son del usuario. Tambien se guarda en save este event"""
+
     if jug_o_maq == 0: 
         global posicion_jugador
         window[444,posicion_jugador].update(palabra_en_string+"\n"+str(puntos),visible=True) 

@@ -1,6 +1,9 @@
 import PySimpleGUI as sg
 
 def menu():
+
+    """Genera la ventana del menu principal"""
+
     hay_partida_guardada = True
     
     try:
@@ -23,6 +26,8 @@ def menu():
     return event
 
 def top_puntajes():
+
+    """Genera la ventana para el top de puntajes"""
 
     try:
         archivo_topten = open('top_ten.txt', 'r')
