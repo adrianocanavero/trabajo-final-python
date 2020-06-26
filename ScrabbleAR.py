@@ -6,7 +6,9 @@ from m_fichas import valores_letras
 import m_maquina
 import pickle
 import time
-from m_menu import menu, top_puntajes
+from m_menu import menu
+from m_topten import top_puntajes
+from m_configuracion import configurar
 import winsound
 
 def main(hay_save):
@@ -152,7 +154,8 @@ def main(hay_save):
     tablero.extend([[m_tablero.crear_boton(i,j,AN,AL) for j in range(filas)] for i in range(filas)])
     tablero.extend([[sg.Text("Seleccione una letra de abajo",pad=(200,5))],
         [sg.Button(m_tablero.tomar_y_borrar(Letras), key = j, size=(AN, AL), pad=(21.5,0)) for j in range(cant_letras)],
-        [sg.Button('Ingresar Palabra!', size= (7,3), pad=(64.4,20)),sg.Button('Posponer', size=(7, 3), pad=(64.4,20)),sg.Button('Terminar', size=(7, 3), pad=(64.4,20))]])
+        [sg.Button('Ingresar Palabra!', size= (7,3), pad=(40.5,20)),sg.Button('Cambiar letras', size= (7,3), pad=(40.5,20)),
+        sg.Button('Posponer', size=(7, 3), pad=(40.5,20)),sg.Button('Terminar', size=(7, 3), pad=(40.5,20))]])
     tablero.extend([[sg.Text('Tiempo',key='timer',pad=(270,0))]])
 
     # \n pone lo que sigue un renglón más abajo  
@@ -202,7 +205,7 @@ def main(hay_save):
         turno_jugador = choice([True, False])
     cambiar = False
 
-    TIEMPO = 10 # tiempo de juego en secs
+    TIEMPO = 120 # tiempo de juego en secs
     # WINDOW LOOP
 
     while True:
@@ -359,6 +362,7 @@ while True:
     elif opcion_elegida == 'Cargar partida':
         main(True)
     elif opcion_elegida == 'Configurar':
+        configurar()
         print("NO ESTÁ IMPLEMENTADO TODAVÍA")
     elif opcion_elegida == 'Top ten\npuntajes':
         top_puntajes()
