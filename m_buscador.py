@@ -11,6 +11,9 @@ archivo_verbos.close()
 
 
 def clasificar(palabra):
+
+	"""Usando pattern retorna si la palabra es sustantivo o es adjetivo"""
+
 	t = tag(palabra, tokenize=True, encoding='utf-8')
 	print('tag: ',t[0][1]) # ver VB JJ o NN
 	if 'NN' in t[0][1]: # tag devuelve una lista con una tupla ('palabra', 'tipo') asi que entre a la pos 0 de la lista y directamente al tipo que esta en la pos 1 de la tupla.
@@ -27,6 +30,11 @@ def clasificar(palabra):
 		return False
 
 def buscar_palabra(palabra):
+
+
+	"""Busca la palabra primero en la lista de verbos en pattern. Si la encuentra ahi,
+		devuelve directamente True. Si no, busca en la lista de palabras armada y
+		manda a la funcion clasificar"""
 	
 	print('Buscar ' + palabra + ' verbos')
 	if not palabra.lower() in lista_verbos:	
