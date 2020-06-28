@@ -1,5 +1,5 @@
 
-# ------------------------------ ScrabbleAR------------------------------
+# --------------------------- ScrabbleAR---------------------------
 
 Creado por: Felipe Barreto y Adriano Canavero.
 
