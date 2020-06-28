@@ -6,12 +6,12 @@ Creado por: Felipe Barreto y Adriano Canavero.
 Aclaraciones:
 
 Para ejecutar la aplicacion, es necesario tener instalado
-Python 3 junto con la libreria pattern y PySimpleGui.
+Python 3 junto con la librería pattern y PySimpleGUI.
 
-El programa puede ejecutarse directamente desde
+El programa se ejecuta desde
 ScrabbleAR.py
 
-El diccionario utilizado para la busqueda de palabras esta hecho en base a un archivo llamado es_AR.dic 
+El diccionario utilizado para la búsqueda de palabras está hecho en base a un archivo llamado es_AR.dic 
 perteneciente a un diccionario de Libre Office, el cual es de acceso libre.
 
-La musica fue compuesta y ejecutada por Adriano Canavero, por lo cual no infringe derechos de autor.
+La música fue compuesta y ejecutada por Adriano Canavero, por lo cual no infringe derechos de autor.
