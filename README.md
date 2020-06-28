@@ -9,7 +9,7 @@ Para ejecutar la aplicación, es necesario tener instalado
 Python 3 junto con la librería pattern y PySimpleGUI.
 
 El programa se ejecuta desde
-ScrabbleAR.py
+ScrabbleAR.py.
 
 El diccionario utilizado para la búsqueda de palabras está hecho en base a un archivo llamado es_AR.dic 
 perteneciente a un diccionario de Libre Office, el cual es de acceso libre.
