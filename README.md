@@ -5,7 +5,7 @@ Creado por: Felipe Barreto y Adriano Canavero.
 
 Aclaraciones:
 
-Para ejecutar la aplicacion, es necesario tener instalado
+Para ejecutar la aplicación, es necesario tener instalado
 Python 3 junto con la librería pattern y PySimpleGUI.
 
 El programa se ejecuta desde
