@@ -11,7 +11,7 @@ from m_topten import top_puntajes
 from m_configuracion import configurar
 import winsound
 
-def main(hay_save):
+def main(hay_save,nivel="medio"):
 
     """ Funcion main: ejecuta el juego debidamente. Recibe True si el jugador eligio Nueva Partida o False si
         el jugador eligió Cargar Partida"""
@@ -151,7 +151,7 @@ def main(hay_save):
 
     # El primer elemento de key es 999 para identificar que es una ficha de la maquina y que no pase nada si el jugador aprieta ahí
     tablero = [[sg.Button(size=(AN, AL), key=(999,j), pad=(21.5,18)) for j in range(cant_letras)]]
-    tablero.extend([[m_tablero.crear_boton(i,j,AN,AL) for j in range(filas)] for i in range(filas)])
+    tablero.extend([[m_tablero.crear_boton(i,j,AN,AL,nivel) for j in range(filas)] for i in range(filas)])
     tablero.extend([[sg.Text("Seleccione una letra de abajo",pad=(200,5))],
         [sg.Button(m_tablero.tomar_y_borrar(Letras), key = j, size=(AN, AL), pad=(21.5,0)) for j in range(cant_letras)],
         [sg.Button('Ingresar Palabra!', size= (7,3), pad=(40.5,20)),sg.Button('Cambiar letras', size= (7,3), pad=(40.5,20)),
@@ -235,8 +235,9 @@ def main(hay_save):
             guardar(save,lugares_usados_total,lugares_usados_temp,window,pos_atril_usadas,
                 letras_ingresadas,palabra,backup_text,horizontal,vertical,puntos_jugador, 
                 puntos_maquina,Letras,tiempo_actual)
+            break
         
-        if event in (None,'Terminar',"Posponer"):
+        if event in (None,'Terminar'):
             break
         
         #SI ES EL TURNO DEL JUGADOR
@@ -310,7 +311,7 @@ def main(hay_save):
                     cambiar = False
                 else:
                     turno_jugador = False
-                    puntos_actuales = m_tablero.calcular_puntos(palabra,lugares_usados_temp,valores_letras)
+                    puntos_actuales = m_tablero.calcular_puntos(palabra,lugares_usados_temp,valores_letras,nivel)
                     puntos_jugador += puntos_actuales
                     m_tablero.agregar_pal_y_pun_a_pantalla(to_string,0,puntos_actuales,window,save)
                     m_tablero.actualizar_puntos(0,window,puntos_jugador)
@@ -336,7 +337,7 @@ def main(hay_save):
             palabra_maquina = str(m_maquina.devolver_palabra()) # Sin str lo considera NoneType
             if palabra_maquina != 'No encontre palabra':
                 posiciones_para_la_maquina = m_maquina.encontrar_lugar(lugares_usados_total,len(palabra_maquina))
-                puntos_actuales = m_tablero.calcular_puntos(palabra_maquina,posiciones_para_la_maquina,valores_letras)
+                puntos_actuales = m_tablero.calcular_puntos(palabra_maquina,posiciones_para_la_maquina,valores_letras,nivel)
                 puntos_maquina += puntos_actuales
                 pos = 0                              
                 for letra in palabra_maquina:
