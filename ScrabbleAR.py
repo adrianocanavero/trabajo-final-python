@@ -11,7 +11,8 @@ from m_topten import top_puntajes
 from m_configuracion import configurar
 import winsound
 
-def main(hay_save,nivel="medio"):
+def main(hay_save,nivel="dificil"):
+
 
     """ Funcion main: ejecuta el juego debidamente. Recibe True si el jugador eligio Nueva Partida o False si
         el jugador eligió Cargar Partida"""
@@ -88,7 +89,7 @@ def main(hay_save,nivel="medio"):
                     #empate(total_jugador)
                     break
     
-    def guardar(save,lugares_usados_total,lugares_usados_temp,window,pos_atril_usadas,
+    def guardar(save,lugares_usados_total,lugares_usados_temp,window,pos_atril_usadas,nivel,
                 letras_ingresadas,palabra,backup_text,horizontal,vertical,puntos_jugador,puntos_maquina,Letras,tiempo_actual):
         """Guarda la información de la partida si el jugador elige Posponer. En save se encuentra la informacion del tablero,
             mientras que en datos_usuario estan los datos indispensables que necesita el juego para realizar sus funciones"""
@@ -114,6 +115,7 @@ def main(hay_save,nivel="medio"):
                         'pos_jug': m_tablero.posicion_jugador,
                         'pos_maq': m_tablero.posicion_maquina,
                         'atril_maq': m_maquina.letras_de_maquina,
+                        'nivel': nivel
                         }
         pickle.dump(datos_usuario,archivo_save)
         archivo_save.close()
@@ -129,6 +131,7 @@ def main(hay_save,nivel="medio"):
             datos_usuario = pickle.load(archivo_save) #aca guardo los datos del usuario
             archivo_save.close()
             print(datos_usuario)
+            nivel = datos_usuario['nivel']
         except EOFError: ## si no hay save, no tendria porque haber problema
             hay_save = False
         except FileNotFoundError:
@@ -148,6 +151,7 @@ def main(hay_save,nivel="medio"):
 
     Letras = [elem for sublist in creando_letras for elem in sublist] #hace que creando_letras sea una sola lista.
     
+
 
     # El primer elemento de key es 999 para identificar que es una ficha de la maquina y que no pase nada si el jugador aprieta ahí
     tablero = [[sg.Button(size=(AN, AL), key=(999,j), pad=(21.5,18)) for j in range(cant_letras)]]
@@ -232,7 +236,7 @@ def main(hay_save,nivel="medio"):
             break
 
         if event == 'Posponer':
-            guardar(save,lugares_usados_total,lugares_usados_temp,window,pos_atril_usadas,
+            guardar(save,lugares_usados_total,lugares_usados_temp,window,pos_atril_usadas,nivel,
                 letras_ingresadas,palabra,backup_text,horizontal,vertical,puntos_jugador, 
                 puntos_maquina,Letras,tiempo_actual)
             break
@@ -240,6 +244,9 @@ def main(hay_save,nivel="medio"):
         if event in (None,'Terminar'):
             break
         
+        if event == 'Cambiar letras':
+            m_tablero.cambiar_letras(window,Letras,cant_letras)
+
         #SI ES EL TURNO DEL JUGADOR
         if turno_jugador:
 
