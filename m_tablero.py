@@ -176,3 +176,51 @@ def agregar_pal_y_pun_a_pantalla(palabra_en_string,jug_o_maq,puntos,window,save)
         window[445,posicion_maquina].update(palabra_en_string+"\n"+str(puntos),visible=True)
         save[445,posicion_maquina] = palabra_en_string+"\n"+str(puntos)
         posicion_maquina += 1
+
+def cambiar_letras(window,Letras,cant_letras):
+
+
+    """ El usuario elige las letras que desa cambiar, estas se devuelven a la bolsa de fichas y se le otorgan
+        nuevas fichas al atril"""
+
+    letras_atril = [] # por si entra a cambiar todas
+    for i in range(cant_letras):
+       letra = window[i].GetText()
+       letras_atril.append(letra)
+    
+    layout = [[sg.Text('Elegir letras a cambiar', justification= 'center', font = 'Any 12', pad= (200,10))],
+                [sg.Button(letras_atril[j], key = j, size=(4, 2), pad=(21.5,0)) for j in range(cant_letras)],
+                [sg.Button('Cambiar', size = (7,3), pad= (100,10)), sg.Button('Cambiar\nTodas', size= (7,3), pad= (100,10))]]
+    
+    win = sg.Window('Cambiar letras', layout,keep_on_top=True)
+
+    letras_a_cambiar = []
+    pos_a_cambiar = []
+
+    while True:
+        event,values = win.Read()
+
+        if isinstance(event,int) and not event == '---': # si es int, es una letra del atril
+            letras_a_cambiar.append(win[event].GetText()) # tomo la lera en esa posicion
+            win[event].update('---')  
+            pos_a_cambiar.append(event)
+
+        if event == 'Cambiar' and letras_a_cambiar:
+            for x in pos_a_cambiar:
+                Letras.append(letras_a_cambiar.pop()) # agrego la letra a cambiar a la bolsa
+                window[x].update(tomar_y_borrar(Letras)) # tomo una letra de letras y hago update de window principal.
+            break
+
+        if event == 'Cambiar\nTodas':
+            for j in range(cant_letras):
+                Letras.append(letras_atril.pop()) # agrego la letra a cambiar a la bolsa
+                window[j].update(tomar_y_borrar(Letras))
+            break
+
+        if event == None:
+            break
+
+    win.close()
+
+        
+    
