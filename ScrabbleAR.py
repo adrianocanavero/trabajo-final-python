@@ -11,7 +11,7 @@ from m_topten import top_puntajes
 from m_configuracion import configurar
 import winsound
 
-def main(hay_save,nivel="dificil"):
+def main(hay_save,nivel="medio"):
 
 
     """ Funcion main: ejecuta el juego debidamente. Recibe True si el jugador eligio Nueva Partida o False si

@@ -188,9 +188,9 @@ def cambiar_letras(window,Letras,cant_letras):
        letra = window[i].GetText()
        letras_atril.append(letra)
     
-    layout = [[sg.Text('Elegir letras a cambiar', justification= 'center', font = 'Any 12', pad= (200,10))],
+    layout = [[sg.Text('Elegir letras a cambiar', justification= 'center', font = 'Any 12', pad= (207,11))],
                 [sg.Button(letras_atril[j], key = j, size=(4, 2), pad=(21.5,0)) for j in range(cant_letras)],
-                [sg.Button('Cambiar', size = (7,3), pad= (100,10)), sg.Button('Cambiar\nTodas', size= (7,3), pad= (100,10))]]
+                [sg.Button('Cambiar', size = (7,3), pad= (102.5,15)), sg.Button('Cambiar\nTodas', size= (7,3), pad= (140,15))]]
     
     win = sg.Window('Cambiar letras', layout,keep_on_top=True)
 
