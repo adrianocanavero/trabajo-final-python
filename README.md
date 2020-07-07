@@ -8,7 +8,7 @@ Aclaraciones:
 Para ejecutar la aplicación, es necesario tener instalado
 Python 3 junto con la librería pattern y PySimpleGUI (la versión 4.20.0).
 
-En Linux algunos componentes del juego se ven un poco corridos respecto a su visialización en Windows.
+En Linux algunos componentes del juego se ven un poco corridos respecto a su visualización en Windows.
 
 El programa se ejecuta desde
 ScrabbleAR.py.
