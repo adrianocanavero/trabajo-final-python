@@ -345,7 +345,10 @@ def main(hay_save=False,tiempo=60,nivel="medio",valores_de_letras=valores_letras
         #SI ES EL TURNO DE LA MÁQUINA
         else:
             turno_jugador = True
-            palabra_maquina = str(m_maquina.devolver_palabra()) # Sin str lo considera NoneType
+            if nivel == "dificil":
+                palabra_maquina = str(m_maquina.palabra_maxima(valores_de_letras)) # Sin str lo considera NoneType
+            else:
+                palabra_maquina = str(m_maquina.devolver_palabra()) # Sin str lo considera NoneType
             if palabra_maquina != 'No encontre palabra':
                 posiciones_para_la_maquina = m_maquina.encontrar_lugar(lugares_usados_total,len(palabra_maquina))
                 puntos_actuales = m_tablero.calcular_puntos(palabra_maquina,posiciones_para_la_maquina,valores_de_letras,nivel)
