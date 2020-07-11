@@ -70,8 +70,8 @@ def crear_diccionario_con_configuracion(values,abecedario_sin_espacio):
     for i in range(4,31):
         puntajes_fichas[abecedario_sin_espacio[i-4]] = int(values[i])
     retornar["puntaje fichas"] = puntajes_fichas
-    cantidad_fichas = {}
+    cantidad_fichas = []
     for i in range(31,58):
-        cantidad_fichas[abecedario_sin_espacio[i-31]] = int(values[i])
+        cantidad_fichas.append([abecedario_sin_espacio[i-31]]*int(values[i]))
     retornar["cantidad fichas"] = cantidad_fichas
     return retornar
