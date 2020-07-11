@@ -1,7 +1,6 @@
 from m_buscador import buscar_palabra
 from itertools import combinations
 from m_tablero import tomar_y_borrar
-from m_fichas import valores_letras
 from random import choice
 from random import randrange
 
