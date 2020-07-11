@@ -21,10 +21,13 @@ def configurar():
         [sg.Text(letra) for letra in abecedario_con_espacio],[sg.Slider(range=(1,20), orientation='v', size=(5,15), default_value=valores_letras[letra]) for letra in abecedario_sin_espacio],
         [sg.Text()], # Genera espacio. En este caso queda mejor generar el espacio de esta forma que con el segundo valor de pad en el elemento de arriba o abajo
         [sg.Text('Configurar la cantidad total de fichas por letra',pad=(440,0))],
-        [sg.Text(letra) for letra in abecedario_con_espacio],[crear_slider(letra) for letra in abecedario_sin_espacio]] # Por defecto cada letra tiene la cantidad que está en creando_letras en ScrabbleAR
+        [sg.Text(letra) for letra in abecedario_con_espacio],[crear_slider(letra) for letra in abecedario_sin_espacio], # Por defecto cada letra tiene la cantidad que está en creando_letras en ScrabbleAR
+        [sg.Text(pad=(231,0)),sg.Button('Atrás',size=(8, 2),pad=(20,15)),sg.Button('Aceptar',size=(8, 2))]]
     window = sg.Window('Menú de configuración',layout)
     event, values = window.read()
     window.close()
+    if event == "Aceptar":
+        return crear_diccionario_con_configuracion(values,abecedario_sin_espacio)
 
 def crear_slider(letra):
     
@@ -48,3 +51,27 @@ def crear_slider(letra):
         return sg.Slider(range=(1,20), orientation='v', size=(5,15), default_value=7)
     else:
         return sg.Slider(range=(1,20), orientation='v', size=(5,15), default_value=1)
+        
+def crear_diccionario_con_configuracion(values,abecedario_sin_espacio):
+    
+    """Devuelve un diccionario con el tiempo, el nivel, el puntaje y la cantidad de fichas elegidas"""
+    
+    retornar = {}
+    retornar["tiempo"] = int(values[0])
+    for i in range(1,4):
+        if values[i] == True:
+            if i == 1:
+                retornar["nivel"] = "facil"
+            elif i == 2:
+                retornar["nivel"] = "medio"
+            else:
+                retornar["nivel"] = "dificil"
+    puntajes_fichas = {}
+    for i in range(4,31):
+        puntajes_fichas[abecedario_sin_espacio[i-4]] = int(values[i])
+    retornar["puntaje fichas"] = puntajes_fichas
+    cantidad_fichas = {}
+    for i in range(31,58):
+        cantidad_fichas[abecedario_sin_espacio[i-31]] = int(values[i])
+    retornar["cantidad fichas"] = cantidad_fichas
+    return retornar
