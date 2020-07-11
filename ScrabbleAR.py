@@ -3,6 +3,7 @@ from random import choice
 import m_buscador
 import m_tablero
 from m_fichas import valores_letras
+from m_fichas import bolsa_de_letras
 import m_maquina
 import pickle
 import time
@@ -11,7 +12,7 @@ from m_topten import top_puntajes
 from m_configuracion import configurar
 import winsound
 
-def main(hay_save,tiempo=60,nivel="medio",valores_de_letras=valores_letras):
+def main(hay_save=False,tiempo=60,nivel="medio",valores_de_letras=valores_letras,bolsa_letras=bolsa_de_letras):
 
 
     """ Funcion main: ejecuta el juego debidamente. Recibe True si el jugador eligio Nueva Partida o False si
@@ -117,7 +118,8 @@ def main(hay_save,tiempo=60,nivel="medio",valores_de_letras=valores_letras):
                         'atril_maq': m_maquina.letras_de_maquina,
                         'nivel': nivel,
                         'timer_total': TIEMPO,
-                        'valores_letras': valores_de_letras
+                        'valores_letras': valores_de_letras,
+                        'cantidad_letras': bolsa_letras
                         }
         pickle.dump(datos_usuario,archivo_save)
         archivo_save.close()
@@ -134,6 +136,7 @@ def main(hay_save,tiempo=60,nivel="medio",valores_de_letras=valores_letras):
             archivo_save.close()
             print(datos_usuario)
             nivel = datos_usuario['nivel']
+            bolsa_letras = datos_usuario["cantidad_letras"]
         except EOFError: ## si no hay save, no tendria porque haber problema
             hay_save = False
         except FileNotFoundError:
@@ -148,12 +151,9 @@ def main(hay_save,tiempo=60,nivel="medio",valores_de_letras=valores_letras):
     INICIO = (7,7)
     filas = 15
     cant_letras = 7
-    creando_letras = [['A']*11,['B']*3,['C']*4,['D']*4,['E']*11,['F']*2,['G']*2,['H']*2,['I']*6,['J']*2,['K']*2,['L']*4,['M']*3,['N']*5,
-                ['Ñ']*2,['O']*8,['P']*2,['Q']*2,['R']*4,['S']*7,['T']*4,['U']*6,['V']*2,['W']*2,'X',['Y']*2,'Z']
+    creando_letras = bolsa_letras
 
-    Letras = [elem for sublist in creando_letras for elem in sublist] #hace que creando_letras sea una sola lista.
-    
-
+    Letras = [elem for sublist in creando_letras for elem in sublist] #hace que creando_letras sea una sola lista
 
     # El primer elemento de key es 999 para identificar que es una ficha de la maquina y que no pase nada si el jugador aprieta ahí
     tablero = [[sg.Button(size=(AN, AL), key=(999,j), pad=(21.5,18)) for j in range(cant_letras)]]
@@ -370,13 +370,13 @@ def main(hay_save,tiempo=60,nivel="medio",valores_de_letras=valores_letras):
 while True:
     opcion_elegida = menu()
     if opcion_elegida == 'Nueva partida':
-        main(False)
+        main()
     elif opcion_elegida == 'Cargar partida':
         main(True)
     elif opcion_elegida == 'Configurar':
         configuracion_elegida = configurar()
         if configuracion_elegida != None:
-            main(False,configuracion_elegida["tiempo"],configuracion_elegida["nivel"],configuracion_elegida["puntaje fichas"])
+            main(False,configuracion_elegida["tiempo"],configuracion_elegida["nivel"],configuracion_elegida["puntaje fichas"],configuracion_elegida["cantidad fichas"])
     elif opcion_elegida == 'Top ten\npuntajes':
         top_puntajes()
     else:
