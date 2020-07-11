@@ -11,7 +11,7 @@ from m_topten import top_puntajes
 from m_configuracion import configurar
 import winsound
 
-def main(hay_save,nivel="facil"):
+def main(hay_save,tiempo=60,nivel="medio",valores_de_letras=valores_letras):
 
 
     """ Funcion main: ejecuta el juego debidamente. Recibe True si el jugador eligio Nueva Partida o False si
@@ -41,15 +41,15 @@ def main(hay_save,nivel="facil"):
                 break
         win_window.close()
 
-    def mostrar_puntaje(razon_fin,puntos_jugador,puntaje_maquina,window,letras_maquina,valores_letras):
+    def mostrar_puntaje(razon_fin,puntos_jugador,puntaje_maquina,window,letras_maquina,valores_de_letras):
 
         """Se ejecuta luego de que termina el tiempo o se terminan las fichas. Muestra las fichas que le quedaron al jugador
             y a la maquina y lo que van a restar del puntaje obtenido por la formación de palabras."""
 
-        def calcularResta(lista_letras, valores_letras):
+        def calcularResta(lista_letras, valores_de_letras):
             puntaje_restar = 0
             for letra in lista_letras:
-                puntaje_restar+= valores_letras[letra]
+                puntaje_restar+= valores_de_letras[letra]
             return puntaje_restar
         letras_atril = []
 
@@ -57,8 +57,8 @@ def main(hay_save,nivel="facil"):
             if window[i].GetText() != '---':
                 letras_atril.append(window[i].GetText())
 
-        resta_jugador = calcularResta(letras_atril,valores_letras)
-        resta_maquina = calcularResta(letras_maquina,valores_letras)
+        resta_jugador = calcularResta(letras_atril,valores_de_letras)
+        resta_maquina = calcularResta(letras_maquina,valores_de_letras)
 
         layout_atril_jugador = [[sg.Text('Tus letras')], [sg.Button(m_tablero.tomar_y_borrar(letras_atril), key = j, size=(AN, AL), pad=(21.5,0)) for j in range(len(letras_atril))],
                                 [sg.Text('Puntaje a restar : ' + str(resta_jugador))]]
@@ -90,7 +90,7 @@ def main(hay_save,nivel="facil"):
                     break
     
     def guardar(save,lugares_usados_total,lugares_usados_temp,window,pos_atril_usadas,nivel,
-                letras_ingresadas,palabra,backup_text,horizontal,vertical,puntos_jugador,puntos_maquina,Letras,tiempo_actual):
+                letras_ingresadas,palabra,backup_text,horizontal,vertical,puntos_jugador,puntos_maquina,Letras,tiempo_actual,TIEMPO,valores_de_letras):
         """Guarda la información de la partida si el jugador elige Posponer. En save se encuentra la informacion del tablero,
             mientras que en datos_usuario estan los datos indispensables que necesita el juego para realizar sus funciones"""
 
@@ -115,7 +115,9 @@ def main(hay_save,nivel="facil"):
                         'pos_jug': m_tablero.posicion_jugador,
                         'pos_maq': m_tablero.posicion_maquina,
                         'atril_maq': m_maquina.letras_de_maquina,
-                        'nivel': nivel
+                        'nivel': nivel,
+                        'timer_total': TIEMPO,
+                        'valores_letras': valores_de_letras
                         }
         pickle.dump(datos_usuario,archivo_save)
         archivo_save.close()
@@ -192,6 +194,8 @@ def main(hay_save,nivel="facil"):
         m_maquina.letras_de_maquina = datos_usuario['atril_maq']
         turno_jugador = True # si se carga la partida siempre es el turno del jugador.
         tiempo_actual = save['timer']
+        tiempo = datos_usuario['timer_total']
+        valores_de_letras = datos_usuario['valores_letras']
     else:
         tiempo_actual = 0
         save = {}
@@ -209,7 +213,7 @@ def main(hay_save,nivel="facil"):
         turno_jugador = choice([True, False])
     cambiar = False
 
-    TIEMPO = 120 # tiempo de juego en secs
+    TIEMPO = tiempo # tiempo de juego en secs
     # WINDOW LOOP
 
     while True:
@@ -232,13 +236,13 @@ def main(hay_save,nivel="facil"):
             if palabra:
                 m_tablero.quitar_letras(lugares_usados_temp,backup_text,window)
                 m_tablero.devolver_letras_atril(palabra,pos_atril_usadas,window) # te devuelve letras si justo estabas metiendo en el tablero y se termino el tiempo
-            mostrar_puntaje(razon_fin,puntos_jugador,puntos_maquina,window,m_maquina.letras_de_maquina,valores_letras)
+            mostrar_puntaje(razon_fin,puntos_jugador,puntos_maquina,window,m_maquina.letras_de_maquina,valores_de_letras)
             break
 
         if event == 'Posponer':
             guardar(save,lugares_usados_total,lugares_usados_temp,window,pos_atril_usadas,nivel,
                 letras_ingresadas,palabra,backup_text,horizontal,vertical,puntos_jugador, 
-                puntos_maquina,Letras,tiempo_actual)
+                puntos_maquina,Letras,tiempo_actual,TIEMPO,valores_de_letras)
             break
         
         if event in (None,'Terminar'):
@@ -318,7 +322,7 @@ def main(hay_save,nivel="facil"):
                     cambiar = False
                 else:
                     turno_jugador = False
-                    puntos_actuales = m_tablero.calcular_puntos(palabra,lugares_usados_temp,valores_letras,nivel)
+                    puntos_actuales = m_tablero.calcular_puntos(palabra,lugares_usados_temp,valores_de_letras,nivel)
                     puntos_jugador += puntos_actuales
                     m_tablero.agregar_pal_y_pun_a_pantalla(to_string,0,puntos_actuales,window,save)
                     m_tablero.actualizar_puntos(0,window,puntos_jugador)
@@ -326,7 +330,7 @@ def main(hay_save,nivel="facil"):
                         m_tablero.dar_nuevas_letras(Letras,pos_atril_usadas,window) # si index error = lista vacia
                     except IndexError:
                         razon_fin = ('Se terminaron las fichas!')
-                        mostrar_puntaje(razon_fin,puntos_jugador,puntos_maquina,window,m_maquina.letras_de_maquina,valores_letras)
+                        mostrar_puntaje(razon_fin,puntos_jugador,puntos_maquina,window,m_maquina.letras_de_maquina,valores_de_letras)
                         break
                     pos_atril_usadas = []
                     horizontal = False
@@ -344,7 +348,7 @@ def main(hay_save,nivel="facil"):
             palabra_maquina = str(m_maquina.devolver_palabra()) # Sin str lo considera NoneType
             if palabra_maquina != 'No encontre palabra':
                 posiciones_para_la_maquina = m_maquina.encontrar_lugar(lugares_usados_total,len(palabra_maquina))
-                puntos_actuales = m_tablero.calcular_puntos(palabra_maquina,posiciones_para_la_maquina,valores_letras,nivel)
+                puntos_actuales = m_tablero.calcular_puntos(palabra_maquina,posiciones_para_la_maquina,valores_de_letras,nivel)
                 puntos_maquina += puntos_actuales
                 pos = 0                              
                 for letra in palabra_maquina:
@@ -370,8 +374,9 @@ while True:
     elif opcion_elegida == 'Cargar partida':
         main(True)
     elif opcion_elegida == 'Configurar':
-        configurar()
-        print("NO ESTÁ IMPLEMENTADO TODAVÍA")
+        configuracion_elegida = configurar()
+        if configuracion_elegida != None:
+            main(False,configuracion_elegida["tiempo"],configuracion_elegida["nivel"],configuracion_elegida["puntaje fichas"])
     elif opcion_elegida == 'Top ten\npuntajes':
         top_puntajes()
     else:
