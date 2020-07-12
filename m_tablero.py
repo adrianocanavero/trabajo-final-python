@@ -75,7 +75,7 @@ def puedo_cambiar(cambiar,event,lugares_usados_temp,lugares_usados_total):
     """Verifica que el evento reciente sea un click en el tablero para ingresar una letra"""
 
     # Se chequea si no es integer para que no cambie las letras.
-    return cambiar and isinstance(event, int) == False and event != '__TIMEOUT__' and event not in lugares_usados_total
+    return cambiar and isinstance(event, int) == False and event != '__TIMEOUT__' and event not in lugares_usados_total and event != 'Cambiar letras'
 
 def es_vertical(letras_ingresadas,event,lugares_usados):
 

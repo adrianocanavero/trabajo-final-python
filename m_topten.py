@@ -1,14 +1,18 @@
 import PySimpleGUI as sg
+import pickle
+from collections import OrderedDict
 
 def top_puntajes():
 
     """Genera la ventana para el top de puntajes"""
 
     try:
-        archivo_topten = open('top_ten.txt', 'r')
+        archivo_topten = open('top_ten.pickle', 'rb')
         lista_topten = []
-        for linea in archivo_topten:
-            lista_topten.append(linea.strip('\n'))
+        dic_top = pickle.load(archivo_topten)
+        top_ordenado = OrderedDict(sorted(dic_top.items(), key=lambda x: x[1],reverse =True))
+        for tupla in top_ordenado.items():
+            lista_topten.append(str(tupla[0]) + ':' + str(tupla[1]))
     except EOFError: 
         lista_topten = []
     except FileNotFoundError:

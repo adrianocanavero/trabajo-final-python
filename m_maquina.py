@@ -1,21 +1,23 @@
 from m_buscador import buscar_palabra
-from itertools import combinations
+from itertools import combinations,permutations
 from m_tablero import tomar_y_borrar
 from random import choice
 from random import randrange
+
+nivel = 'medio'
 
 def devolver_palabra():
 
     """Retorna una palabra dada la lista de letras que posee el atril de la maquina, en caso de no encontrar,
         retorna 'No encontre palabra'."""
 
-    print('devuelve primer palabra que encuentra')
+    #print('devuelve primer palabra que encuentra')
     encontre = False
-    for i in reversed(range (2, len(letras_de_maquina)+1)): # arranca desde 2
+    for i in reversed(range (2, 7)): # arranca desde 2
         combinations_list= list(combinations(letras_de_maquina, i))
         for tupla in combinations_list:
             to_string = ''.join(tupla)
-            if buscar_palabra(to_string):
+            if buscar_palabra(to_string,nivel):
                 encontre = True
                 return to_string
     if not encontre:
@@ -24,7 +26,7 @@ def devolver_palabra():
 def palabra_maxima(valores_letras):
     """Metodo pensado para implementar en un nivel con mayor dificultad"""
 
-    print('devuelve maxima palabra')
+    #print('devuelve maxima palabra')
     max = 0
     sum = 0
     palabra_max = ''
@@ -33,7 +35,7 @@ def palabra_maxima(valores_letras):
         combinations_list= list(combinations(letras_de_maquina, i))
         for tupla in combinations_list:
             to_string = ''.join(tupla)
-            if buscar_palabra(to_string):
+            if buscar_palabra(to_string,nivel):
                 encontre = True
                 for char in to_string:
                     sum += valores_letras[char]
