@@ -14,7 +14,7 @@ import winsound
 from m_veredicto import mostrar_puntaje
 from m_guardado import guardar,inicializar_variables,abrir_guardado
 
-def main(hay_save=False,tiempo=120,nivel="medio",valores_de_letras=valores_letras,bolsa_letras=bolsa_de_letras):
+def main(hay_save=False,tiempo=60,nivel="medio",valores_de_letras=valores_letras,bolsa_letras=bolsa_de_letras):
 
 
     """ Funcion main: ejecuta el juego debidamente. Recibe True si el jugador eligio Nueva Partida o False si

@@ -139,4 +139,4 @@ cython_debug/
 
 datos_usuario.pickle
 savewindow.pickle
-top_ten.txt
+top_ten.pickle
