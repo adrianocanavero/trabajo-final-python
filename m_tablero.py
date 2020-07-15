@@ -180,8 +180,8 @@ def agregar_pal_y_pun_a_pantalla(palabra_en_string,jug_o_maq,puntos,window,save)
 def cambiar_letras(window,Letras,cant_letras):
 
 
-    """ El usuario elige las letras que desa cambiar, estas se devuelven a la bolsa de fichas y se le otorgan
-        nuevas fichas al atril"""
+    """ El usuario elige las letras que desea cambiar, estas se devuelven a la bolsa de fichas y se le otorgan nuevas
+     fichas al atril. Retorna True si hubo un cambio efectivo, si salió de la ventana sin cambiar, retorna False"""
 
     letras_atril = [] # por si entra a cambiar todas
     for i in range(cant_letras):
@@ -196,7 +196,7 @@ def cambiar_letras(window,Letras,cant_letras):
 
     letras_a_cambiar = []
     pos_a_cambiar = []
-
+    ok = False
     while True:
         event,values = win.Read()
 
@@ -209,18 +209,21 @@ def cambiar_letras(window,Letras,cant_letras):
             for x in pos_a_cambiar:
                 Letras.append(letras_a_cambiar.pop()) # agrego la letra a cambiar a la bolsa
                 window[x].update(tomar_y_borrar(Letras)) # tomo una letra de letras y hago update de window principal.
+            ok = True
             break
 
         if event == 'Cambiar\nTodas':
             for j in range(cant_letras):
                 Letras.append(letras_atril.pop()) # agrego la letra a cambiar a la bolsa
                 window[j].update(tomar_y_borrar(Letras))
+            ok = True
             break
+            
 
         if event == None:
             break
 
     win.close()
-
+    return ok
         
     

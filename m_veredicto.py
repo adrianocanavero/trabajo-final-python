@@ -42,14 +42,30 @@ def ganar(total_jugador,total_maquina):
         e,v = win_window.read()
         if e == 'Guardar Puntaje' and v[0]!='Ingresa tu nombre:':
             if len(dic_top)== 10:
-                dic_top.pop(minkey)
-                dic_top[v[0]] = total_jugador
-                archivo_topten = open('top_ten.pickle', 'wb')
-                print(dic_top)
-                pickle.dump(dic_top,archivo_topten)
-                archivo_topten.close()
+                if v[0] in dic_top.keys(): # si el nombre ingresado es igual al que hay que reemplazar.
+                    if total_jugador>dic_top[v[0]]: # si es el mismo nombre y el total es mayor:
+                        dic_top[v[0]] = total_jugador # actualizo su puntaje.
+                        archivo_topten = open('top_ten.pickle', 'wb')
+                        print(dic_top)
+                        pickle.dump(dic_top,archivo_topten)
+                        archivo_topten.close()
+                    else:
+                        break #si no es mayor, no se modifica el archivo
+                else: 
+                    dic_top.pop(minkey) # si no, saco lo que habia en minkey y asigno el nuevo nombre.
+                    dic_top[v[0]] = total_jugador
+                    archivo_topten = open('top_ten.pickle', 'wb')
+                    print(dic_top)
+                    pickle.dump(dic_top,archivo_topten)
+                    archivo_topten.close()
             else:
-                dic_top[v[0]] = total_jugador
+                if v[0] in dic_top.keys(): #si queda lugar en dic pero el nombre ingresado ya esta:
+                    if total_jugador > dic_top[v[0]]: #me fijo si el el puntaje es mayor al que ya esta
+                        dic_top[v[0]] = total_jugador 
+                    else:
+                        break #si no es mayor, no modifico el archivo.
+                else:        
+                    dic_top[v[0]] = total_jugador # si el nombre no esta en dic, directamente lo asigno.
                 archivo_topten = open('top_ten.pickle', 'wb')
                 pickle.dump(dic_top,archivo_topten)
                 archivo_topten.close()

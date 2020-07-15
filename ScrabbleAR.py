@@ -118,15 +118,35 @@ def main(hay_save=False,tiempo=60,nivel="medio",valores_de_letras=valores_letras
                 puntos_maquina,Letras,tiempo_actual,TIEMPO,valores_de_letras,veces_cambiadas)
             break
         
-        if event in (None,'Terminar'):
+        if event == None:
+            break
+
+        if event == 'Terminar':
+            m_tablero.quitar_letras(lugares_usados_temp,backup_text,window)
+            m_tablero.devolver_letras_atril(palabra,pos_atril_usadas,window)
+            razon_fin = 'Terminar'
+            mostrar_puntaje(razon_fin,puntos_jugador,puntos_maquina,window,m_maquina.letras_de_maquina,valores_de_letras,cant_letras)
             break
         
         if event == 'Cambiar letras' and veces_cambiadas<3:
-            m_tablero.quitar_letras(lugares_usados_temp,backup_text,window)
-            m_tablero.devolver_letras_atril(palabra,pos_atril_usadas,window)
-            m_tablero.cambiar_letras(window,Letras,cant_letras)
-            veces_cambiadas+=1
-            turno_jugador = False
+            if pos_atril_usadas: # si el usuario ingreso letras en el tablero y eligió cambiar.
+                m_tablero.quitar_letras(lugares_usados_temp,backup_text,window) #devuelvo fichas y reseteo variables de ingreso de palabras.
+                m_tablero.devolver_letras_atril(palabra,pos_atril_usadas,window)
+                #reset variables
+                pos_atril_usadas = []
+                horizontal = False
+                vertical = False
+                backup_text = []
+                letras_ingresadas = 0
+                for tupla in lugares_usados_temp:
+                    lugares_usados_total.remove(tupla) # quito valores de temp que estan en total.
+                    save.pop(tupla) # tambien la quito de save.
+                lugares_usados_temp = []
+                palabra = []
+                cambiar = False
+            if m_tablero.cambiar_letras(window,Letras,cant_letras): # realizo la funcion de cambiar letras y si devuelve true, efectivizo el if.
+                veces_cambiadas+=1
+                turno_jugador = False
 
         #SI ES EL TURNO DEL JUGADOR
         if turno_jugador:
@@ -207,7 +227,7 @@ def main(hay_save=False,tiempo=60,nivel="medio",valores_de_letras=valores_letras
                         m_tablero.dar_nuevas_letras(Letras,pos_atril_usadas,window) # si index error = lista vacia
                     except IndexError:
                         razon_fin = ('Se terminaron las fichas!')
-                        mostrar_puntaje(razon_fin,puntos_jugador,puntos_maquina,window,m_maquina.letras_de_maquina,valores_de_letras)
+                        mostrar_puntaje(razon_fin,puntos_jugador,puntos_maquina,window,m_maquina.letras_de_maquina,valores_de_letras,cant_letras)
                         break
                     pos_atril_usadas = []
                     horizontal = False
@@ -242,7 +262,7 @@ def main(hay_save=False,tiempo=60,nivel="medio",valores_de_letras=valores_letras
                     m_maquina.cambiar_letras_usadas_por_nuevas(palabra_maquina,Letras)
                 except IndexError:
                     razon_fin = 'Se acabaron las fichas!'
-                    mostrar_puntaje(razon_fin,puntos_jugador,puntos_maquina,window,m_maquina.letras_de_maquina,cant_letras)
+                    mostrar_puntaje(razon_fin,puntos_jugador,puntos_maquina,window,m_maquina.letras_de_maquina,valores_de_letras,cant_letras)
                     break
             
     window.close()
