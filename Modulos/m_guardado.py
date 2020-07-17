@@ -1,9 +1,6 @@
-import sys
 import pickle
 import Modulos.m_tablero as m_tablero
 import Modulos.m_maquina as m_maquina
-
-sys.path.append("..")
 
 def guardar(save,lugares_usados_total,lugares_usados_temp,window,pos_atril_usadas,nivel,bolsa_letras,letras_ingresadas,palabra,
     backup_text,horizontal,vertical,puntos_jugador,puntos_maquina,Letras,tiempo_actual,TIEMPO,valores_de_letras,veces_cambiadas):

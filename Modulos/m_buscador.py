@@ -1,8 +1,6 @@
-import sys
 from pattern.es import tag
 import pickle
 
-sys.path.append("..")
 archivo_palabras = open('Pickles/lista_palabras_arg.pickle', 'rb')
 lista_palabras = pickle.load(archivo_palabras)
 archivo_palabras.close()
