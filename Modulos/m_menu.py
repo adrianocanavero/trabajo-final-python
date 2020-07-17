@@ -7,9 +7,9 @@ def menu():
     hay_partida_guardada = True
     
     try:
-        archivo_save = open('savewindow.pickle', 'rb')
+        archivo_save = open('Archivos locales/savewindow.pickle', 'rb')
         archivo_save.close()
-        archivo_save = open('datos_usuario.pickle', 'rb')
+        archivo_save = open('Archivos locales/datos_usuario.pickle', 'rb')
         archivo_save.close()
     except FileNotFoundError: # Se comprueba si hay una partida guardada
         hay_partida_guardada = False

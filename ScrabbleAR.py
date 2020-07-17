@@ -1,30 +1,25 @@
 import PySimpleGUI as sg
 from random import choice
-import m_buscador
-import m_tablero
-from m_fichas import valores_letras
-from m_fichas import bolsa_de_letras
-import m_maquina
-import pickle
+import Modulos.m_buscador as m_buscador
+import Modulos.m_tablero as m_tablero
+from Modulos.m_fichas import valores_letras
+from Modulos.m_fichas import bolsa_de_letras
+import Modulos.m_maquina as m_maquina
 import time
-from m_menu import menu
-from m_topten import top_puntajes
-from m_configuracion import configurar
-import winsound
-from m_veredicto import mostrar_puntaje
-from m_guardado import guardar,inicializar_variables,abrir_guardado
+from Modulos.m_menu import menu
+from Modulos.m_topten import top_puntajes
+from Modulos.m_configuracion import configurar
+from Modulos.m_veredicto import mostrar_puntaje
+from Modulos.m_guardado import guardar,inicializar_variables,abrir_guardado
 
 def main(hay_save=False,tiempo=60,nivel="medio",valores_de_letras=valores_letras,bolsa_letras=bolsa_de_letras):
 
     """ Funcion main: ejecuta el juego debidamente. El primer parámetro determina si hay una partida 
         guardada y los otros la configuración del juego. Todos tienen valores por defecto"""
     
-    # Se ntenta abrir archivo. 
+    # Si se eligió "Cargar partida" se cargan los datos de la partida guardada en variables
     if (hay_save): 
-        try:
-            save_window,datos_usuario,nivel,bolsa_letras = abrir_guardado()
-        except FileNotFoundError: # Se comprueba si hay una partida guardada
-            hay_save = False
+        save_window,datos_usuario,nivel,bolsa_letras = abrir_guardado()
     m_maquina.nivel = nivel
     
     #LAYOUT

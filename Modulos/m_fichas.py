@@ -1,5 +1,3 @@
-import PySimpleGUI as sg
-
 # i = fila y j = columna
 
 bolsa_de_letras = [['A']*11,['B']*3,['C']*4,['D']*4,['E']*11,['F']*2,['G']*2,['H']*2,['I']*6,['J']*2,['K']*2,['L']*4,['M']*3,['N']*5,

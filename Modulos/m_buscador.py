@@ -1,10 +1,12 @@
+import sys
 from pattern.es import tag
 import pickle
 
-archivo_palabras = open('lista_palabras_arg.pickle', 'rb')
+sys.path.append("..")
+archivo_palabras = open('Pickles/lista_palabras_arg.pickle', 'rb')
 lista_palabras = pickle.load(archivo_palabras)
 archivo_palabras.close()
-archivo_verbos = open('lista_verbos_sin_acento.pickle', 'rb')
+archivo_verbos = open('Pickles/lista_verbos_sin_acento.pickle', 'rb')
 lista_verbos = pickle.load(archivo_verbos)
 archivo_verbos.close()
 

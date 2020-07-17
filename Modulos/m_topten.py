@@ -7,7 +7,7 @@ def top_puntajes():
     """Genera la ventana para el top de puntajes"""
 
     try:
-        archivo_topten = open('top_ten.pickle', 'rb')
+        archivo_topten = open('Archivos locales/top_ten.pickle', 'rb')
         lista_topten = []
         dic_top = pickle.load(archivo_topten)
         top_ordenado = OrderedDict(sorted(dic_top.items(), key=lambda x: x[1],reverse =True))

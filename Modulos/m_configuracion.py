@@ -1,5 +1,5 @@
 import PySimpleGUI as sg
-from m_fichas import valores_letras
+from Modulos.m_fichas import valores_letras
 
 def configurar():
     

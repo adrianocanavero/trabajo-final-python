@@ -1,6 +1,6 @@
 import PySimpleGUI as sg
 from random import choice
-import m_fichas
+import Modulos.m_fichas as m_fichas
 
 posicion_jugador = 0 # Es la posición en la que hay que poner la próxima palabra y puntaje de una jugada en concreta
 posicion_maquina = 0 # Es la posición en la que hay que poner la próxima palabra y puntaje de una jugada en concreta
