@@ -16,20 +16,17 @@ from m_guardado import guardar,inicializar_variables,abrir_guardado
 
 def main(hay_save=False,tiempo=60,nivel="medio",valores_de_letras=valores_letras,bolsa_letras=bolsa_de_letras):
 
-
-    """ Funcion main: ejecuta el juego debidamente. Recibe True si el jugador eligio Nueva Partida o False si
-        el jugador eligió Cargar Partida"""
+    """ Funcion main: ejecuta el juego debidamente. El primer parámetro determina si hay una partida 
+        guardada y los otros la configuración del juego. Todos tienen valores por defecto"""
     
-    
-    # Intento abrir archivo. 
+    # Se ntenta abrir archivo. 
     if (hay_save): 
         try:
             save_window,datos_usuario,nivel,bolsa_letras = abrir_guardado()
-        except EOFError: ## si no hay save, no tendria porque haber problema
-            hay_save = False
-        except FileNotFoundError:
+        except FileNotFoundError: # Se comprueba si hay una partida guardada
             hay_save = False
     m_maquina.nivel = nivel
+    
     #LAYOUT
         
     puntos_jugador = 0
@@ -41,14 +38,14 @@ def main(hay_save=False,tiempo=60,nivel="medio",valores_de_letras=valores_letras
     cant_letras = 7
     creando_letras = bolsa_letras
 
-    Letras = [elem for sublist in creando_letras for elem in sublist] #hace que creando_letras sea una sola lista
+    Letras = [elem for sublist in creando_letras for elem in sublist] # hace que creando_letras sea una sola lista
 
     # El primer elemento de key es 999 para identificar que es una ficha de la maquina y que no pase nada si el jugador aprieta ahí
     tablero = [[sg.Button(size=(AN, AL), key=(999,j), pad=(21.5,18)) for j in range(cant_letras)]]
     tablero.extend([[m_tablero.crear_boton(i,j,AN,AL,nivel) for j in range(filas)] for i in range(filas)])
     tablero.extend([[sg.Text("Seleccione una letra de abajo",pad=(200,5))],
         [sg.Button(m_tablero.tomar_y_borrar(Letras), key = j, size=(AN, AL), pad=(21.5,0)) for j in range(cant_letras)],
-        [sg.Button('Ingresar Palabra!', size= (7,3), pad=(40.5,20)),sg.Button('Cambiar letras', size= (7,3), pad=(40.5,20)),
+        [sg.Button('Ingresar palabra', size= (7,3), pad=(40.5,20)),sg.Button('Cambiar letras', size= (7,3), pad=(40.5,20)),
         sg.Button('Posponer', size=(7, 3), pad=(40.5,20)),sg.Button('Terminar', size=(7, 3), pad=(40.5,20))]])
     tablero.extend([[sg.Text('Tiempo',key='timer',pad=(270,0))]])
 
@@ -63,8 +60,8 @@ def main(hay_save=False,tiempo=60,nivel="medio",valores_de_letras=valores_letras
 
     window = sg.Window('ScrabbleAR',layout)
 
-    #Variables del juego
-    if hay_save: # aca cargo todos los datos
+    # Variables del juego
+    if hay_save: # aca se cargan todos los datos
         save,lugares_usados_temp,lugares_usados_total,vertical,horizontal, \
         letras_ingresadas,backup_text,palabra,pos_atril_usadas,Letras, \
         puntos_jugador,puntos_maquina,turno_jugador,tiempo_actual,tiempo, \
@@ -79,22 +76,24 @@ def main(hay_save=False,tiempo=60,nivel="medio",valores_de_letras=valores_letras
         vertical = False
         horizontal = False
         letras_ingresadas = 0
-        backup_text = [] #lista con texto de botones p/ restablecer en caso de palabra erronea.
-        palabra = [] # borre letras usadas y solo queda palabra. mande a las funciones que usaban letras_usadas palabras y funcionan igual.
-        pos_atril_usadas = [] # lista con las posiciones usadas del atril. Sirve en caso de reponer y para que no se vuelvan a usar.
-        # reponer, además,  cuando se usa una letra se guarda acá y si está acá ya no se puede usar otra vez
+        backup_text = [] # lista con texto de botones para restablecer en caso de palabra erronea.
+        palabra = []
+        pos_atril_usadas = [] # lista con las posiciones usadas del atril. Sirve en caso de reponer y para que no se
+        # vuelvan a usar. Además, cuando se usa una letra se guarda acá y si está acá ya no se puede usar otra vez
         turno_jugador = choice([True, False])
         veces_cambiadas = 0
     cambiar = False
 
-    TIEMPO = tiempo # tiempo de juego en secs
+    TIEMPO = tiempo # tiempo de juego en segundos
+    
     # WINDOW LOOP
 
     while True:
+        
         event, values = window.read(timeout=100)
         if hay_save:
             for key in save:
-                window[key].update(save[key],visible = True) # parece que hace un update con todas las keys de un diccionario.
+                window[key].update(save[key],visible = True) # hace un update con todas las keys de un diccionario.
             m_tablero.actualizar_puntos(0,window,puntos_jugador)
             m_tablero.actualizar_puntos(1,window,puntos_maquina)
             window.Refresh()
@@ -102,13 +101,13 @@ def main(hay_save=False,tiempo=60,nivel="medio",valores_de_letras=valores_letras
             hay_save = False
 
         tiempo_actual += 0.1
-        window['timer'].update('{}:{:02d}'.format((TIEMPO -round(tiempo_actual))//60,(TIEMPO -round(tiempo_actual))%60)) # lo hice asi para que la cuenta sea regresiva
+        window['timer'].update('{}:{:02d}'.format((TIEMPO -round(tiempo_actual))//60,(TIEMPO -round(tiempo_actual))%60)) # la cuenta es regresiva
 
         if (tiempo_actual >= TIEMPO):
             razon_fin = '¡Terminó el tiempo!'
             if palabra:
                 m_tablero.quitar_letras(lugares_usados_temp,backup_text,window)
-                m_tablero.devolver_letras_atril(palabra,pos_atril_usadas,window) # te devuelve letras si justo estabas metiendo en el tablero y se termino el tiempo
+                m_tablero.devolver_letras_atril(palabra,pos_atril_usadas,window) # devuelve letras si se termina el tiempo y se estaban poniendo letras
             mostrar_puntaje(razon_fin,puntos_jugador,puntos_maquina,window,m_maquina.letras_de_maquina,valores_de_letras,cant_letras)
             break
 
@@ -130,21 +129,21 @@ def main(hay_save=False,tiempo=60,nivel="medio",valores_de_letras=valores_letras
         
         if event == 'Cambiar letras' and veces_cambiadas<3:
             if pos_atril_usadas: # si el usuario ingreso letras en el tablero y eligió cambiar.
-                m_tablero.quitar_letras(lugares_usados_temp,backup_text,window) #devuelvo fichas y reseteo variables de ingreso de palabras.
+                m_tablero.quitar_letras(lugares_usados_temp,backup_text,window) # se devuelve fichas y se resetea variables de ingreso de palabras.
                 m_tablero.devolver_letras_atril(palabra,pos_atril_usadas,window)
-                #reset variables
+                # reset variables
                 pos_atril_usadas = []
                 horizontal = False
                 vertical = False
                 backup_text = []
                 letras_ingresadas = 0
                 for tupla in lugares_usados_temp:
-                    lugares_usados_total.remove(tupla) # quito valores de temp que estan en total.
-                    save.pop(tupla) # tambien la quito de save.
+                    lugares_usados_total.remove(tupla) # se sacan valores de temp que estan en total.
+                    save.pop(tupla) # tambien se saca de save.
                 lugares_usados_temp = []
                 palabra = []
                 cambiar = False
-            if m_tablero.cambiar_letras(window,Letras,cant_letras): # realizo la funcion de cambiar letras y si devuelve true, efectivizo el if.
+            if m_tablero.cambiar_letras(window,Letras,cant_letras): # se realiza la funcion de cambiar letras y si devuelve true, se hace efectivo el if.
                 veces_cambiadas+=1
                 turno_jugador = False
 
@@ -153,16 +152,15 @@ def main(hay_save=False,tiempo=60,nivel="medio",valores_de_letras=valores_letras
 
             #AGARRO DEL ATRIL
             if m_tablero.es_letra_atril(event):
-                #escribir = event[0] # ahora no puedo agarrar directamente de event el texto del boton. 
                 if event not in pos_atril_usadas: # para que no se puedan agarrar los "---"
                     escribir = window.Element(event).GetText()
                     cambiar = True
-                    boton_de_la_letra = event # Con esto puedo acceder al botón de la letra usada // ahora es un integer.
+                    boton_de_la_letra = event # Con esto se puede acceder al botón de la letra usada. Ahora es un integer.
         
             if m_tablero.puedo_cambiar(cambiar,event,lugares_usados_temp,lugares_usados_total):  
                 
             #INGRESAR PRIMERA LETRA
-                if not lugares_usados_total: # Si lugares usados es vacio, solo permito ingresar en inicio.
+                if not lugares_usados_total: # Si lugares usados es vacio, solo se permite ingresar en inicio.
                     if event == INICIO:
                         m_tablero.agregar_letra(lugares_usados_total,backup_text,event,escribir,save,
                                                 lugares_usados_temp,palabra,boton_de_la_letra,window,pos_atril_usadas)  
@@ -170,7 +168,7 @@ def main(hay_save=False,tiempo=60,nivel="medio",valores_de_letras=valores_letras
                         letras_ingresadas += 1
                 else:
                     #DETERMINAR SI SE INGRESA HORIZONTAL O VERTICAL
-                    #print(horizontal)
+                    # print(horizontal)
                     if not lugares_usados_temp:
                         m_tablero.agregar_letra(lugares_usados_total,backup_text,event,escribir,save,
                                                 lugares_usados_temp,palabra,boton_de_la_letra,window,pos_atril_usadas)
@@ -192,15 +190,15 @@ def main(hay_save=False,tiempo=60,nivel="medio",valores_de_letras=valores_letras
                                 cambiar = False
                                 letras_ingresadas += 1
                 
-                    # SE BORRA LA LETRA USADA
-                if not cambiar: # si cambiar pasa a false, es porque ya puso una letra en el atril.
-                    #print(boton_de_la_letra)
+                # SE BORRA LA LETRA USADA
+                if not cambiar: # si cambiar pasa a false, es porque ya se puso una letra en el atril.
+                    # print(boton_de_la_letra)
                     window[boton_de_la_letra].update("---")
             
         
             #CHEQUEO DE PALABRA
             if m_tablero.ingreso_palabra(letras_ingresadas,event):
-                to_string = ''.join(palabra) # paso lista palabra a string
+                to_string = ''.join(palabra) # se pasa lista palabra a string
                 if not m_buscador.buscar_palabra(to_string,nivel):
                     m_tablero.quitar_letras(lugares_usados_temp,backup_text,window)
                     m_tablero.devolver_letras_atril(palabra,pos_atril_usadas,window)
@@ -212,8 +210,8 @@ def main(hay_save=False,tiempo=60,nivel="medio",valores_de_letras=valores_letras
                     backup_text = []
                     letras_ingresadas = 0
                     for tupla in lugares_usados_temp:
-                        lugares_usados_total.remove(tupla) # quito valores de temp que estan en total.
-                        save.pop(tupla) # tambien la quito de save.
+                        lugares_usados_total.remove(tupla) # se sacan valores de temp que estan en total.
+                        save.pop(tupla) # tambien se saca de save.
                     lugares_usados_temp = []
                     palabra = []
                     cambiar = False
@@ -224,8 +222,8 @@ def main(hay_save=False,tiempo=60,nivel="medio",valores_de_letras=valores_letras
                     m_tablero.agregar_pal_y_pun_a_pantalla(to_string,0,puntos_actuales,window,save)
                     m_tablero.actualizar_puntos(0,window,puntos_jugador)
                     try:
-                        m_tablero.dar_nuevas_letras(Letras,pos_atril_usadas,window) # si index error = lista vacia
-                    except IndexError:
+                        m_tablero.dar_nuevas_letras(Letras,pos_atril_usadas,window) 
+                    except IndexError: # si index error = lista vacia
                         razon_fin = ('Se terminaron las fichas!')
                         mostrar_puntaje(razon_fin,puntos_jugador,puntos_maquina,window,m_maquina.letras_de_maquina,valores_de_letras,cant_letras)
                         break
@@ -237,7 +235,7 @@ def main(hay_save=False,tiempo=60,nivel="medio",valores_de_letras=valores_letras
                     lugares_usados_temp = []
                     palabra = []
                     cambiar = False
-            #print(palabra)
+            # print(palabra)
         
         #SI ES EL TURNO DE LA MÁQUINA
         else:
@@ -260,13 +258,14 @@ def main(hay_save=False,tiempo=60,nivel="medio",valores_de_letras=valores_letras
                 lugares_usados_total.extend(posiciones_para_la_maquina)
                 try:
                     m_maquina.cambiar_letras_usadas_por_nuevas(palabra_maquina,Letras)
-                except IndexError:
+                except IndexError: # si index error = lista vacia
                     razon_fin = 'Se acabaron las fichas!'
                     mostrar_puntaje(razon_fin,puntos_jugador,puntos_maquina,window,m_maquina.letras_de_maquina,valores_de_letras,cant_letras)
                     break
             
     window.close()
 
+# PROGRAMA PRINCIPAL
 while True:
     opcion_elegida = menu()
     if opcion_elegida == 'Nueva partida':

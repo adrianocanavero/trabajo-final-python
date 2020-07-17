@@ -17,7 +17,7 @@ valores_letras = {
 
 def triplicar_palabra(i,j,nivel):
 
-    """Verifica si el casillero es de triplicar"""
+    """Verifica si el casillero es de triplicar el puntaje de la palabra"""
 
     if nivel == "facil":
         if ((i == 0 and j == 0) or (i == 0 and j == 14) or (i == 14 and j == 0) or (i == 14 and j == 14)
@@ -34,7 +34,7 @@ def triplicar_palabra(i,j,nivel):
 
 def descuento_tres(i,j,nivel):
 
-    """Verifica si el casillero es de descontar"""
+    """Verifica si el casillero es de descontar tres puntos"""
 
     if nivel == "facil":
         if (i == 6 and j == 6) or (i == 6 and j == 8) or (i == 8 and j == 6) or (i == 8 and j == 8):
@@ -64,7 +64,7 @@ def triplicar_letra(i,j,nivel):
 
 def descuento_uno(i,j,nivel):
 
-    """Verifica si el casillero es de descontar uno del puntaje de la letra"""
+    """Verifica si el casillero es de descontar un punto"""
 
     if nivel == "facil":
         if (i == 1 and j == 7) or (i == 7 and j == 1) or (i == 7 and j == 13) or (i == 13 and j == 7):
@@ -82,7 +82,7 @@ def descuento_uno(i,j,nivel):
 
 def duplicar_palabra(i,j,nivel):
 
-    """Verifica si el casillero es de duplicar el puntaje total de la palabra"""
+    """Verifica si el casillero es de duplicar el puntaje de la palabra"""
 
     if nivel == "facil":
         if ((i == 3 and j == 3) or (i == 3 and j == 11) or (i == 9 and j == 5) or (i == 9 and j == 9)
@@ -99,7 +99,7 @@ def duplicar_palabra(i,j,nivel):
 
 def descuento_dos(i,j,nivel):
 
-    """Verifica si el casillero es de descontar dos puntos a la letra"""
+    """Verifica si el casillero es de descontar dos puntos"""
 
     if nivel == "facil":
         if (i == 0 and j == 7) or (i == 14 and j == 7) or (i == 7 and j == 0) or (i == 7 and j == 14):

@@ -21,7 +21,7 @@ def configurar():
         [sg.Text(letra) for letra in abecedario_con_espacio],[sg.Slider(range=(1,20), orientation='v', size=(5,15), default_value=valores_letras[letra]) for letra in abecedario_sin_espacio],
         [sg.Text()], # Genera espacio. En este caso queda mejor generar el espacio de esta forma que con el segundo valor de pad en el elemento de arriba o abajo
         [sg.Text('Configurar la cantidad total de fichas por letra',pad=(440,0))],
-        [sg.Text(letra) for letra in abecedario_con_espacio],[crear_slider(letra) for letra in abecedario_sin_espacio], # Por defecto cada letra tiene la cantidad que está en creando_letras en ScrabbleAR
+        [sg.Text(letra) for letra in abecedario_con_espacio],[crear_slider(letra) for letra in abecedario_sin_espacio], # Por defecto cada letra tiene la cantidad que está en bolsa_de_letras en m_fichas
         [sg.Text(pad=(231,0)),sg.Button('Atrás',size=(8, 2),pad=(20,15)),sg.Button('Aceptar',size=(8, 2))]]
     window = sg.Window('Menú de configuración',layout)
     event, values = window.read()

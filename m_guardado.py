@@ -3,8 +3,9 @@ import m_tablero
 import m_maquina
 from random import choice
 
-def guardar(save,lugares_usados_total,lugares_usados_temp,window,pos_atril_usadas,nivel,bolsa_letras,
-                letras_ingresadas,palabra,backup_text,horizontal,vertical,puntos_jugador,puntos_maquina,Letras,tiempo_actual,TIEMPO,valores_de_letras,veces_cambiadas):
+def guardar(save,lugares_usados_total,lugares_usados_temp,window,pos_atril_usadas,nivel,bolsa_letras,letras_ingresadas,palabra,
+    backup_text,horizontal,vertical,puntos_jugador,puntos_maquina,Letras,tiempo_actual,TIEMPO,valores_de_letras,veces_cambiadas):
+    
     """Guarda la información de la partida si el jugador elige Posponer. En save se encuentra la informacion del tablero,
         mientras que en datos_usuario estan los datos indispensables que necesita el juego para realizar sus funciones"""
 
@@ -42,7 +43,7 @@ def inicializar_variables(save_window,datos_usuario):
 
     """ Inicializa variables del juego con los datos del guardado"""
 
-    save = save_window # si hay save pongo en save lo que hay en verificar_guardado.
+    save = save_window # si hay save se pone en save lo que hay en verificar_guardado.
     lugares_usados_temp = datos_usuario['lug_temp']
     lugares_usados_total = datos_usuario['lug_tot']
     vertical = datos_usuario['ver']
@@ -71,14 +72,11 @@ def abrir_guardado():
     """Intenta abrir el archivo de guardado y guardar los datos en variables"""
 
     archivo_save = open('savewindow.pickle', 'rb')
-    save_window = pickle.load(archivo_save) #aca guardo para actualizar el tablero
+    save_window = pickle.load(archivo_save) # aca se guarda para actualizar el tablero
     archivo_save.close()
     archivo_save = open('datos_usuario.pickle', 'rb')
-    datos_usuario = pickle.load(archivo_save) #aca guardo los datos del usuario
+    datos_usuario = pickle.load(archivo_save) # aca se guarda los datos del usuario
     archivo_save.close()
     nivel = datos_usuario['nivel']
     bolsa_letras = datos_usuario["cantidad_letras"]
-  
     return save_window,datos_usuario,nivel,bolsa_letras
-
-

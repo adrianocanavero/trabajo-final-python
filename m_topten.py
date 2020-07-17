@@ -13,14 +13,12 @@ def top_puntajes():
         top_ordenado = OrderedDict(sorted(dic_top.items(), key=lambda x: x[1],reverse =True))
         for tupla in top_ordenado.items():
             lista_topten.append(str(tupla[0]) + ':' + str(tupla[1]))
-    except EOFError: 
-        lista_topten = []
-    except FileNotFoundError:
+    except FileNotFoundError: # Se comprueba si hay un top ten guardado
         lista_topten = []
     
     top_layout = [[sg.Text('Top 10 Scrabble AR', justification='center', font = 'Any 14')],
-                    [sg.Listbox(lista_topten, font = 'Any 12', size = (20,20))],
-                    [sg.Button('Salir')]]
+        [sg.Listbox(lista_topten, font = 'Any 12', size = (20,20))],
+        [sg.Button('Salir')]]
     top_window = sg.Window('Top 10',top_layout)
 
     while True:

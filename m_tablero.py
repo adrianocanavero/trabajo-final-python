@@ -45,8 +45,8 @@ def calcular_puntos(palabra,lugares_usados,valores_letras,nivel):
     lugares_usados.reverse()
     puntos = 0
     posicion = 0
-    triplicar_la_palabra = False # Hay que asegurarse que solo se pueda caer en un triplicar puntos por palabra a la vez
-    duplicar_la_palabra = False # Hay que asegurarse que solo se pueda caer en un duplicar puntos por palabra a la vez
+    triplicar_la_palabra = False # Solo se pueda caer en un triplicar puntos por palabra a la vez, por eso puede ser booleano en vez de integer
+    duplicar_la_palabra = False # Solo se pueda caer en un duplicar puntos por palabra a la vez, por eso puede ser booleano en vez de integer
     for letra in palabra:
         if (m_fichas.triplicar_palabra(lugares_usados[posicion][0],lugares_usados[posicion][1],nivel)):
             triplicar_la_palabra = True
@@ -93,7 +93,7 @@ def es_letra_atril(event):
 
     """Verifica que el evento reciente sea un click sobre el atril del usuario."""
 
-    return isinstance(event, int) #Como ahora la key es un integer, si es integer, significa que agarro del atril.
+    return isinstance(event, int) # Como ahora la key es un integer, si es integer, significa que agarro del atril.
 
 def quitar_letras(lugares_usados,backup_text,window):
 
@@ -106,11 +106,11 @@ def quitar_letras(lugares_usados,backup_text,window):
 
 def agregar_letra(lugares_usados_total,backup_text,event,escribir,save,lugares_usados_temp,palabra,boton_de_la_letra,window,pos_atril_usadas):
 
-    """Agrega una letra al tablero y efectiviza el update de la ventana.
-    Agrega las cordenadas ingresadas a save y actualiza los lugares usados"""
+    """Agrega una letra al tablero y hace efectivo el update de la ventana.
+        Agrega las cordenadas ingresadas a save y actualiza los lugares usados"""
 
-    backup_text.insert(0,window.Element(event).GetText()) # guardo texto que habia en el boton  
-    window[event].update(escribir) #event = posición del botón tocado (dado por key=(i,j)), si agarro del atril es una letra.
+    backup_text.insert(0,window.Element(event).GetText()) # se guarda el texto que habia en el boton  
+    window[event].update(escribir) # event = posición del botón tocado (dado por key=(i,j)), si se agarra del atril es una letra.
     save[event] = escribir
     lugares_usados_total.append(event)
     lugares_usados_temp.insert(0,event) # Agrega elementos a lista[0] corriendo los demas. ultimo elem = pos 0 siempre.
@@ -120,10 +120,10 @@ def agregar_letra(lugares_usados_total,backup_text,event,escribir,save,lugares_u
 def ingreso_palabra(letras_ingresadas,event):
 
     """Verifica que las letras ingresadas sean más de dos y 
-    que se haya clickeado el boton de ingresar palabra"""
+        que se haya clickeado el boton de ingresar palabra"""
 
     if letras_ingresadas>= 2:
-        if letras_ingresadas == 7 or event == 'Ingresar Palabra!':
+        if letras_ingresadas == 7 or event == 'Ingresar palabra':
             return True
         else: return False
     else:
@@ -179,9 +179,8 @@ def agregar_pal_y_pun_a_pantalla(palabra_en_string,jug_o_maq,puntos,window,save)
 
 def cambiar_letras(window,Letras,cant_letras):
 
-
     """ El usuario elige las letras que desea cambiar, estas se devuelven a la bolsa de fichas y se le otorgan nuevas
-     fichas al atril. Retorna True si hubo un cambio efectivo, si salió de la ventana sin cambiar, retorna False"""
+        fichas al atril. Retorna True si hubo un cambio efectivo, si salió de la ventana sin cambiar, retorna False"""
 
     letras_atril = [] # por si entra a cambiar todas
     for i in range(cant_letras):
@@ -189,8 +188,8 @@ def cambiar_letras(window,Letras,cant_letras):
        letras_atril.append(letra)
     
     layout = [[sg.Text('Elegir letras a cambiar', justification= 'center', font = 'Any 12', pad= (207,11))],
-                [sg.Button(letras_atril[j], key = j, size=(4, 2), pad=(21.5,0)) for j in range(cant_letras)],
-                [sg.Button('Cambiar', size = (7,3), pad= (102.5,15)), sg.Button('Cambiar\nTodas', size= (7,3), pad= (140,15))]]
+        [sg.Button(letras_atril[j], key = j, size=(4, 2), pad=(21.5,0)) for j in range(cant_letras)],
+        [sg.Button('Cambiar', size = (7,3), pad= (102.5,15)), sg.Button('Cambiar\nTodas', size= (7,3), pad= (140,15))]]
     
     win = sg.Window('Cambiar letras', layout,keep_on_top=True)
 
@@ -198,32 +197,30 @@ def cambiar_letras(window,Letras,cant_letras):
     pos_a_cambiar = []
     ok = False
     while True:
+        
         event,values = win.Read()
 
         if isinstance(event,int) and not event == '---': # si es int, es una letra del atril
-            letras_a_cambiar.append(win[event].GetText()) # tomo la lera en esa posicion
+            letras_a_cambiar.append(win[event].GetText()) # se toma la lera en esa posicion
             win[event].update('---')  
             pos_a_cambiar.append(event)
 
         if event == 'Cambiar' and letras_a_cambiar:
             for x in pos_a_cambiar:
-                Letras.append(letras_a_cambiar.pop()) # agrego la letra a cambiar a la bolsa
-                window[x].update(tomar_y_borrar(Letras)) # tomo una letra de letras y hago update de window principal.
+                Letras.append(letras_a_cambiar.pop()) # se agrega la letra a cambiar a la bolsa
+                window[x].update(tomar_y_borrar(Letras)) # se toma una letra de letras y hace update de window principal.
             ok = True
             break
 
         if event == 'Cambiar\nTodas':
             for j in range(cant_letras):
-                Letras.append(letras_atril.pop()) # agrego la letra a cambiar a la bolsa
+                Letras.append(letras_atril.pop()) # se agrega la letra a cambiar a la bolsa
                 window[j].update(tomar_y_borrar(Letras))
             ok = True
             break
             
-
         if event == None:
             break
 
     win.close()
     return ok
-        
-    

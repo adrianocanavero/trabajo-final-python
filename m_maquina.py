@@ -5,11 +5,13 @@ from random import choice
 from random import randrange
 
 nivel = 'medio'
+cant_letras = 7
+letras_de_maquina = []
 
 def devolver_palabra():
 
-    """Retorna una palabra dada la lista de letras que posee el atril de la maquina, en caso de no encontrar,
-        retorna 'No encontre palabra'."""
+    """Retorna una palabra (la primera que encuentra) dada la lista de letras que posee el atril de la maquina, 
+        en caso de no encontrar una palabra, retorna 'No encontre palabra'. Esta función se usa en los niveles facil y medio"""
 
     #print('devuelve primer palabra que encuentra')
     encontre = False
@@ -24,7 +26,10 @@ def devolver_palabra():
         return 'No encontre palabra'
 
 def palabra_maxima(valores_letras):
-    """Metodo pensado para implementar en un nivel con mayor dificultad"""
+    
+    """Retorna una palabra (la que en base al valor de cada letra genera un mayor puntaje) dada la lista de   
+        letras que posee el atril de la maquina, en caso de no encontrar una palabra, retorna 'No encontre palabra'.
+        Esta función se usa en el nivel dificil"""
 
     #print('devuelve maxima palabra')
     max = 0
@@ -47,7 +52,7 @@ def palabra_maxima(valores_letras):
                      
 def encontrar_lugar(lugares_usados_total,cantidad):
     
-    """Busca un espacio acorde a la cantidad de letras que tiene la palabra que va a ingresar la AI"""
+    """Busca un espacio acorde a la cantidad de letras que tiene la palabra que va a ingresar la maquina"""
 
     # SI EL (7,7) ESTÁ LIBRE (O SEA EMPIEZA LA MÁQUINA) LOS LUGARES A USAR VAN A ESTAR VERTICAL U HORIZONTALMENTE DESDE (7,7)
     if (7,7) not in lugares_usados_total:
@@ -73,7 +78,9 @@ def encontrar_lugar(lugares_usados_total,cantidad):
             direccion = choice(["Vertical", "Horizontal"]) # SE ELIGE UNA DIRECCIÓN AL AZAR
             
             # MIENTRAS LOS LUGARES QUE SE QUIEREN USAR NO ESTÉN OCUPADOS, NO SE VAYAN DEL TABLERO Y NO SE HAYAN CONSEGUIDO LUGARES PARA TODAS LAS LETRAS
-            while ("Lugar ocupado" not in map(lambda coordenadas:coordenadas if (coordenadas not in lugares_usados_total) else "Lugar ocupado",lugares_a_usar)) and (not posicion_invalida) and (cant_usadas < cantidad):
+            while (("Lugar ocupado" not in map(lambda coordenadas:coordenadas if (coordenadas not in lugares_usados_total) else "Lugar ocupado",lugares_a_usar))
+                and (not posicion_invalida) and (cant_usadas < cantidad)):
+                
                 cant_usadas += 1
                 if direccion == "Vertical":
                     fila += 1
@@ -93,8 +100,7 @@ def encontrar_lugar(lugares_usados_total,cantidad):
 
 def cambiar_letras_usadas_por_nuevas(palabra_maquina,Letras):
 
-    """Remueve del atril de la maquina las letras que utilizó para formar una palabra y
-        le da letras nuevas"""
+    """Remueve del atril de la maquina las letras que utilizó para formar una palabra y le da letras nuevas"""
 
     letras_a_reponer = 0
     for letra in palabra_maquina: # Saca las letras usadas
@@ -105,16 +111,7 @@ def cambiar_letras_usadas_por_nuevas(palabra_maquina,Letras):
 
 def inicializar_letras_maquina(Letras):
 
-    """Da las letras iniciales de la maquina cuando se comienza una nueva partida""" 
+    """Da las letras iniciales a la maquina cuando se comienza una nueva partida""" 
     
     for j in range(cant_letras):
         letras_de_maquina.append(tomar_y_borrar(Letras))
-
-cant_letras = 7
-
-letras_de_maquina = []
-
-#print(devolver_palabra(letras_de_maquina))
-
-#print(palabra_maxima(letras_de_maquina,valores_letras))
-

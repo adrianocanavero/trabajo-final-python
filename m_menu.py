@@ -11,11 +11,10 @@ def menu():
         archivo_save.close()
         archivo_save = open('datos_usuario.pickle', 'rb')
         archivo_save.close()
-    except EOFError: ## si no hay save, no tendria porque haber problema
-        hay_partida_guardada = False
-    except FileNotFoundError:
+    except FileNotFoundError: # Se comprueba si hay una partida guardada
         hay_partida_guardada = False
             
+    # Solo si hay una partida guardada se muestra la opción "Cargar partida"
     if hay_partida_guardada:
         layout = [[sg.Button('Nueva partida',size =(10,5)), sg.Button('Cargar partida',size =(10,5)), sg.Button('Configurar',size =(10,5)),
             sg.Button('Top ten\npuntajes',size =(10,5)),sg.Button('Salir',size =(10,5))]]

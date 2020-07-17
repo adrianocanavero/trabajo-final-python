@@ -1,5 +1,4 @@
 from pattern.es import tag
-
 import pickle
 
 archivo_palabras = open('lista_palabras_arg.pickle', 'rb')
@@ -9,10 +8,10 @@ archivo_verbos = open('lista_verbos_sin_acento.pickle', 'rb')
 lista_verbos = pickle.load(archivo_verbos)
 archivo_verbos.close()
 
-
 def clasificar(palabra,nivel):
 
 	"""Usando pattern retorna si la palabra es sustantivo o es adjetivo"""
+    
 	if nivel == 'facil':
 		t = tag(palabra, tokenize=True, encoding='utf-8')
 		#print('tag: ',t[0][1]) # ver VB JJ o NN
@@ -42,7 +41,6 @@ def clasificar(palabra,nivel):
 			return False
 
 def buscar_palabra(palabra,nivel):
-
 
 	"""Busca la palabra primero en la lista de verbos en pattern. Si la encuentra ahi,
 		devuelve directamente True. Si no, busca en la lista de palabras armada y
