@@ -2,6 +2,7 @@ import PySimpleGUI as sg
 import pickle
 import winsound
 from Modulos.m_tablero import tomar_y_borrar
+from Modulos.m_carpeta import crear_carpeta
 
 def ganar(total_jugador,total_maquina):
 
@@ -44,6 +45,7 @@ def ganar(total_jugador,total_maquina):
                 if v[0] in dic_top.keys(): # si el nombre ingresado es igual al que hay que reemplazar.
                     if total_jugador>dic_top[v[0]]: # si es el mismo nombre y el total es mayor:
                         dic_top[v[0]] = total_jugador # se actualiza su puntaje.
+                        crear_carpeta() # Si la carpeta "Archivos locales" no existe la crea, sino no hace nada
                         archivo_topten = open('Archivos locales/top_ten.pickle', 'wb')
                         # print(dic_top)
                         pickle.dump(dic_top,archivo_topten)
@@ -53,6 +55,7 @@ def ganar(total_jugador,total_maquina):
                 else: 
                     dic_top.pop(minkey) # sino, se saca lo que habia en minkey y se le asigna el nuevo nombre.
                     dic_top[v[0]] = total_jugador
+                    crear_carpeta() # Si la carpeta "Archivos locales" no existe la crea, sino no hace nada
                     archivo_topten = open('Archivos locales/top_ten.pickle', 'wb')
                     # print(dic_top)
                     pickle.dump(dic_top,archivo_topten)
@@ -65,6 +68,7 @@ def ganar(total_jugador,total_maquina):
                         break # si no es mayor, no se modifica el archivo.
                 else:        
                     dic_top[v[0]] = total_jugador # si el nombre no esta en dic, directamente se asigna.
+                crear_carpeta() # Si la carpeta "Archivos locales" no existe la crea, sino no hace nada
                 archivo_topten = open('Archivos locales/top_ten.pickle', 'wb')
                 pickle.dump(dic_top,archivo_topten)
                 archivo_topten.close()

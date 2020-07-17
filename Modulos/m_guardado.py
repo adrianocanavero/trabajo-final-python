@@ -1,6 +1,7 @@
 import pickle
 import Modulos.m_tablero as m_tablero
 import Modulos.m_maquina as m_maquina
+from Modulos.m_carpeta import crear_carpeta
 
 def guardar(save,lugares_usados_total,lugares_usados_temp,window,pos_atril_usadas,nivel,bolsa_letras,letras_ingresadas,palabra,
     backup_text,horizontal,vertical,puntos_jugador,puntos_maquina,Letras,tiempo_actual,TIEMPO,valores_de_letras,veces_cambiadas):
@@ -11,6 +12,7 @@ def guardar(save,lugares_usados_total,lugares_usados_temp,window,pos_atril_usada
     for i in range (7):
         save[i] = window[i].GetText()
     save['timer'] = tiempo_actual
+    crear_carpeta() # Si la carpeta "Archivos locales" no existe la crea, sino no hace nada
     archivo_save = open('Archivos locales/savewindow.pickle', 'wb')
     pickle.dump(save,archivo_save)
     archivo_save.close()
@@ -40,7 +42,7 @@ def guardar(save,lugares_usados_total,lugares_usados_temp,window,pos_atril_usada
 
 def inicializar_variables(save_window,datos_usuario):
 
-    """ Inicializa variables del juego con los datos del guardado"""
+    """Inicializa variables del juego con los datos del guardado"""
 
     save = save_window # si hay save se pone en save lo que hay en verificar_guardado.
     lugares_usados_temp = datos_usuario['lug_temp']
@@ -70,6 +72,7 @@ def abrir_guardado():
 
     """Abre el archivo de guardado y carga los datos en variables"""
 
+    crear_carpeta() # Si la carpeta "Archivos locales" no existe la crea, sino no hace nada
     archivo_save = open('Archivos locales/savewindow.pickle', 'rb')
     save_window = pickle.load(archivo_save) # aca se guarda para actualizar el tablero
     archivo_save.close()
