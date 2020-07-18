@@ -158,7 +158,7 @@ def palabras_por_turno_pantalla(jug_o_maq,clave):
     """Retorna el boton que muestra las palabras con sus puntajes pero invisible,
         cuando se ingresa una palabra, se hace un update y se visibiliza"""
 
-    return sg.Button(size=(8, 2), key=(jug_o_maq,clave), pad=(0,0),visible=False)
+    return sg.Button(size=(8, 2), key=(jug_o_maq,clave), pad=(0,0), button_color=('white', '#314978'), visible=False)
     
 
 def agregar_pal_y_pun_a_pantalla(palabra_en_string,jug_o_maq,puntos,window,save):
@@ -188,8 +188,8 @@ def cambiar_letras(window,Letras,cant_letras):
        letras_atril.append(letra)
     
     layout = [[sg.Text('Elegir letras a cambiar', justification= 'center', font = 'Any 12', pad= (207,11))],
-        [sg.Button(letras_atril[j], key = j, size=(4, 2), pad=(21.5,0)) for j in range(cant_letras)],
-        [sg.Button('Cambiar', size = (7,3), pad= (102.5,15)), sg.Button('Cambiar\nTodas', size= (7,3), pad= (140,15))]]
+        [sg.Button(letras_atril[j], key = j, size=(4, 2), pad=(21.5,0), button_color=('white', '#3d578b')) for j in range(cant_letras)],
+        [sg.Button('Cambiar', size = (7,3), pad= (102.5,15), button_color=('white', '#52313a')), sg.Button('Cambiar\ntodas', size= (7,3), pad= (140,15), button_color=('white', '#52313a'))]]
     
     win = sg.Window('Cambiar letras', layout,keep_on_top=True)
 
@@ -212,7 +212,7 @@ def cambiar_letras(window,Letras,cant_letras):
             ok = True
             break
 
-        if event == 'Cambiar\nTodas':
+        if event == 'Cambiar\ntodas':
             for j in range(cant_letras):
                 Letras.append(letras_atril.pop()) # se agrega la letra a cambiar a la bolsa
                 window[j].update(tomar_y_borrar(Letras))

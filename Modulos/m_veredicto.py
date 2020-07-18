@@ -31,8 +31,8 @@ def ganar(total_jugador,total_maquina):
                     [sg.Text('Puntaje PC: ' + str(total_maquina), font= 'Any 14'), sg.Text('Puntaje jugador: ' + str(total_jugador), font= 'Any 14')],
                     [sg.Text('Ingresa tu nombre:', visible=mostrar)],
                     [sg.InputText(visible=mostrar)],
-                    [sg.Button('Guardar Puntaje', visible=mostrar)],
-                    [sg.Button('Salir')]]
+                    [sg.Button('Guardar Puntaje', button_color=('white', '#52313a'), visible=mostrar)],
+                    [sg.Button('Salir', button_color=('white', '#52313a'))]]
     win_window = sg.Window('Resultado',win_layout,keep_on_top=True)
     try:
         winsound.PlaySound('Sonidos/ganar.wav', winsound.SND_ASYNC)
@@ -84,7 +84,7 @@ def perder_empatar(total_jugador,total_maquina,resultado):
 
     layout = [[sg.Text(resultado,font= 'Any 16',size =(25,1), justification='center')],
         [sg.Text('Puntaje PC: ' + str(total_maquina), font= 'Any 14'), sg.Text('Puntaje jugador: ' + str(total_jugador), font= 'Any 14')],
-        [sg.Button('Salir')]]
+        [sg.Button('Salir', button_color=('white', '#52313a'))]]
     
     window = sg.Window('Resultado', layout)
     
@@ -117,12 +117,12 @@ def mostrar_puntaje(razon_fin,puntos_jugador,puntos_maquina,window,letras_maquin
     resta_jugador = calcularResta(letras_atril,valores_de_letras)
     resta_maquina = calcularResta(letras_maquina,valores_de_letras)
 
-    layout_atril_jugador = [[sg.Text('Tus letras')], [sg.Button(tomar_y_borrar(letras_atril), key = j, size=(4, 2), pad=(21.5,0)) for j in range(len(letras_atril))],
+    layout_atril_jugador = [[sg.Text('Tus letras')], [sg.Button(tomar_y_borrar(letras_atril), key = j, size=(4, 2), pad=(21.5,0), button_color=('white', '#3d578b')) for j in range(len(letras_atril))],
                             [sg.Text('Puntaje a restar : ' + str(resta_jugador))]]
-    layout_atril_maquina = [[sg.Text('Letras de PC')],[sg.Button(tomar_y_borrar(letras_maquina), key = j, size=(4, 2), pad=(21.5,0)) for j in range(len(letras_maquina))],
+    layout_atril_maquina = [[sg.Text('Letras de PC')],[sg.Button(tomar_y_borrar(letras_maquina), key = j, size=(4, 2), pad=(21.5,0), button_color=('white', '#3d578b')) for j in range(len(letras_maquina))],
                             [sg.Text('Puntaje a restar : ' + str(resta_maquina))]]
     
-    layout_final = [[sg.Column(layout_atril_jugador)], [sg.Column(layout_atril_maquina)], [sg.Button('Siguiente')]]
+    layout_final = [[sg.Column(layout_atril_jugador)], [sg.Column(layout_atril_maquina)], [sg.Button('Siguiente', button_color=('white', '#52313a'))]]
 
     window_final = sg.Window(razon_fin,layout_final,keep_on_top=True) # se mantiene siempre arriba del tablero
     while True:

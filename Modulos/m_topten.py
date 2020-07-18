@@ -16,9 +16,9 @@ def top_puntajes():
     except FileNotFoundError: # Se comprueba si hay un top ten guardado
         lista_topten = []
     
-    top_layout = [[sg.Text('Top 10 Scrabble AR', justification='center', font = 'Any 14')],
+    top_layout = [[sg.Text('Top 10 ScrabbleAR', justification='center', font = 'Any 14')],
         [sg.Listbox(lista_topten, font = 'Any 12', size = (20,20))],
-        [sg.Button('Salir')]]
+        [sg.Button('Salir', button_color=('white', '#52313a'))]]
     top_window = sg.Window('Top 10',top_layout)
 
     while True:

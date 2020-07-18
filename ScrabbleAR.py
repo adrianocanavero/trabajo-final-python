@@ -36,20 +36,22 @@ def main(hay_save=False,tiempo=60,nivel="medio",valores_de_letras=valores_letras
     Letras = [elem for sublist in creando_letras for elem in sublist] # hace que creando_letras sea una sola lista
 
     # El primer elemento de key es 999 para identificar que es una ficha de la maquina y que no pase nada si el jugador aprieta ahí
-    tablero = [[sg.Button(size=(AN, AL), key=(999,j), pad=(21.5,18)) for j in range(cant_letras)]]
+    tablero = [[sg.Button(size=(AN, AL), key=(999,j), pad=(21.5,18), button_color=('white', '#3d578b')) for j in range(cant_letras)]]
     tablero.extend([[m_tablero.crear_boton(i,j,AN,AL,nivel) for j in range(filas)] for i in range(filas)])
     tablero.extend([[sg.Text("Seleccione una letra de abajo",pad=(200,5))],
-        [sg.Button(m_tablero.tomar_y_borrar(Letras), key = j, size=(AN, AL), pad=(21.5,0)) for j in range(cant_letras)],
-        [sg.Button('Ingresar palabra', size= (7,3), pad=(40.5,20)),sg.Button('Cambiar letras', size= (7,3), pad=(40.5,20)),
-        sg.Button('Posponer', size=(7, 3), pad=(40.5,20)),sg.Button('Terminar', size=(7, 3), pad=(40.5,20))]])
+        [sg.Button(m_tablero.tomar_y_borrar(Letras), key = j, size=(AN, AL), pad=(21.5,0), button_color=('white', '#3d578b')) for j in range(cant_letras)],
+        [sg.Button('Ingresar palabra', size= (7,3), pad=(40.5,20), button_color=('white', '#52313a')),sg.Button('Cambiar letras', size= (7,3), pad=(40.5,20), button_color=('white', '#52313a')),
+        sg.Button('Posponer', size=(7, 3), pad=(40.5,20), button_color=('white', '#52313a')),sg.Button('Terminar', size=(7, 3), pad=(40.5,20), button_color=('white', '#52313a'))]])
     tablero.extend([[sg.Text('Tiempo',key='timer',pad=(270,0))]])
 
     # \n pone lo que sigue un renglón más abajo  
-    zona_puntos_jugador = [[sg.Button("PUNTOS\n"+str(puntos_jugador), size=(8, 4), key=(888,0), pad=(0,340))]]
-    zona_puntos_maquina = [[sg.Button("PUNTOS\n"+str(puntos_maquina), size=(8, 4), key=(888,1), pad=(0,340))]]
+    zona_puntos_jugador = [[sg.Text("",pad=(0,130))],[sg.Button("JUGADOR",size=(8,2), pad=(0,10), button_color=('white', '#272727'))],
+        [sg.Button("PUNTOS\n"+str(puntos_jugador), size=(8, 4), key=(888,0), pad=(0,0), button_color=('white', '#4b4b4b'))]]
+    zona_puntos_maquina = [[sg.Text("",pad=(0,130))],[sg.Button("MÁQUINA",size=(8,2), pad=(5,10), button_color=('white', '#272727'))],
+        [sg.Button("PUNTOS\n"+str(puntos_maquina), size=(8, 4), key=(888,1), pad=(5,0), button_color=('white', '#4b4b4b'))]]
 
-    pal_y_pun_jug_en_pantalla = [[m_tablero.palabras_por_turno_pantalla(444,j) for j in range(20)]] # Puede mostrar hasta 20 palabras
-    pal_y_pun_maq_en_pantalla = [[m_tablero.palabras_por_turno_pantalla(445,j) for j in range(20)]] # Puede mostrar hasta 20 palabras
+    pal_y_pun_jug_en_pantalla = [[m_tablero.palabras_por_turno_pantalla(444,j) for j in range(25)]] # Puede mostrar hasta 25 palabras
+    pal_y_pun_maq_en_pantalla = [[m_tablero.palabras_por_turno_pantalla(445,j) for j in range(25)]] # Puede mostrar hasta 25 palabras
 
     layout = [[sg.Column(pal_y_pun_maq_en_pantalla),sg.Column(zona_puntos_maquina),sg.Column(tablero),sg.Column(zona_puntos_jugador),sg.Column(pal_y_pun_jug_en_pantalla)]]
 
@@ -219,7 +221,7 @@ def main(hay_save=False,tiempo=60,nivel="medio",valores_de_letras=valores_letras
                     try:
                         m_tablero.dar_nuevas_letras(Letras,pos_atril_usadas,window) 
                     except IndexError: # si index error = lista vacia
-                        razon_fin = ('Se terminaron las fichas!')
+                        razon_fin = '¡Se acabaron las fichas!'
                         mostrar_puntaje(razon_fin,puntos_jugador,puntos_maquina,window,m_maquina.letras_de_maquina,valores_de_letras,cant_letras)
                         break
                     pos_atril_usadas = []
@@ -254,7 +256,7 @@ def main(hay_save=False,tiempo=60,nivel="medio",valores_de_letras=valores_letras
                 try:
                     m_maquina.cambiar_letras_usadas_por_nuevas(palabra_maquina,Letras)
                 except IndexError: # si index error = lista vacia
-                    razon_fin = 'Se acabaron las fichas!'
+                    razon_fin = '¡Se acabaron las fichas!'
                     mostrar_puntaje(razon_fin,puntos_jugador,puntos_maquina,window,m_maquina.letras_de_maquina,valores_de_letras,cant_letras)
                     break
             
