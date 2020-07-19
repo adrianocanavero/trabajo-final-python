@@ -109,13 +109,17 @@ def agregar_letra(lugares_usados_total,backup_text,event,escribir,save,lugares_u
     """Agrega una letra al tablero y hace efectivo el update de la ventana.
         Agrega las cordenadas ingresadas a save y actualiza los lugares usados"""
 
-    backup_text.insert(0,window.Element(event).GetText()) # se guarda el texto que habia en el boton  
-    window[event].update(escribir) # event = posición del botón tocado (dado por key=(i,j)), si se agarra del atril es una letra.
-    save[event] = escribir
-    lugares_usados_total.append(event)
-    lugares_usados_temp.insert(0,event) # Agrega elementos a lista[0] corriendo los demas. ultimo elem = pos 0 siempre.
-    palabra.append(escribir)
-    pos_atril_usadas.append(boton_de_la_letra)
+    se_puso_una_letra = True
+    if event[0] >= 0 and event[0] <= 14 and event[1] >= 0 and event[1] <= 14: # Se asegura que lugar que se tocó para poner la letra es una posición del tablero
+        backup_text.insert(0,window.Element(event).GetText()) # se guarda el texto que habia en el boton  
+        window[event].update(escribir) # event = posición del botón tocado (dado por key=(i,j)), si se agarra del atril es una letra.
+        save[event] = escribir
+        lugares_usados_total.append(event)
+        lugares_usados_temp.insert(0,event) # Agrega elementos a lista[0] corriendo los demas. ultimo elem = pos 0 siempre.
+        palabra.append(escribir)
+        pos_atril_usadas.append(boton_de_la_letra)
+        se_puso_una_letra = False
+    return se_puso_una_letra
 
 def ingreso_palabra(letras_ingresadas,event):
 
@@ -123,7 +127,7 @@ def ingreso_palabra(letras_ingresadas,event):
         que se haya clickeado el boton de ingresar palabra"""
 
     if letras_ingresadas>= 2:
-        if letras_ingresadas == 7 or event == 'Ingresar palabra':
+        if letras_ingresadas == 7 or event == (471,471):
             return True
         else: return False
     else:

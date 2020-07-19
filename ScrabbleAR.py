@@ -20,7 +20,7 @@ def main(hay_save=False,tiempo=60,nivel="medio",valores_de_letras=valores_letras
     # Si se eligió "Cargar partida" se cargan los datos de la partida guardada en variables
     if (hay_save): 
         save_window,datos_usuario,nivel,bolsa_letras = abrir_guardado()
-    m_maquina.nivel = nivel
+    m_maquina.nivel = nivel # Se guarda en la máquina el nivel de la partida porque va a ser usado
     
     #LAYOUT
         
@@ -40,14 +40,14 @@ def main(hay_save=False,tiempo=60,nivel="medio",valores_de_letras=valores_letras
     tablero.extend([[m_tablero.crear_boton(i,j,AN,AL,nivel) for j in range(filas)] for i in range(filas)])
     tablero.extend([[sg.Text("Seleccione una letra de abajo",pad=(200,5))],
         [sg.Button(m_tablero.tomar_y_borrar(Letras), key = j, size=(AN, AL), pad=(21.5,0), button_color=('white', '#3d578b')) for j in range(cant_letras)],
-        [sg.Button('Ingresar palabra', size= (7,3), pad=(40.5,20), button_color=('white', '#52313a')),sg.Button('Cambiar letras', size= (7,3), pad=(40.5,20), button_color=('white', '#52313a')),
+        [sg.Button('Ingresar palabra', size= (7,3), key=(471,471), pad=(40.5,20), button_color=('white', '#52313a')),sg.Button('Cambiar letras', size= (7,3), pad=(40.5,20), button_color=('white', '#52313a')),
         sg.Button('Posponer', size=(7, 3), pad=(40.5,20), button_color=('white', '#52313a')),sg.Button('Terminar', size=(7, 3), pad=(40.5,20), button_color=('white', '#52313a'))]])
     tablero.extend([[sg.Text('Tiempo',key='timer',pad=(270,0))]])
 
     # \n pone lo que sigue un renglón más abajo  
-    zona_puntos_jugador = [[sg.Text("",pad=(0,130))],[sg.Button("JUGADOR",size=(8,2), pad=(0,10), button_color=('white', '#272727'))],
+    zona_puntos_jugador = [[sg.Text("",pad=(0,130))],[sg.Button("JUGADOR",size=(8,2), key=(456,0), pad=(0,10), button_color=('white', '#272727'))],
         [sg.Button("PUNTOS\n"+str(puntos_jugador), size=(8, 4), key=(888,0), pad=(0,0), button_color=('white', '#4b4b4b'))]]
-    zona_puntos_maquina = [[sg.Text("",pad=(0,130))],[sg.Button("MÁQUINA",size=(8,2), pad=(5,10), button_color=('white', '#272727'))],
+    zona_puntos_maquina = [[sg.Text("",pad=(0,130))],[sg.Button("MÁQUINA",size=(8,2), key=(456,1), pad=(5,10), button_color=('white', '#272727'))],
         [sg.Button("PUNTOS\n"+str(puntos_maquina), size=(8, 4), key=(888,1), pad=(5,0), button_color=('white', '#4b4b4b'))]]
 
     pal_y_pun_jug_en_pantalla = [[m_tablero.palabras_por_turno_pantalla(444,j) for j in range(25)]] # Puede mostrar hasta 25 palabras
@@ -159,40 +159,39 @@ def main(hay_save=False,tiempo=60,nivel="medio",valores_de_letras=valores_letras
             #INGRESAR PRIMERA LETRA
                 if not lugares_usados_total: # Si lugares usados es vacio, solo se permite ingresar en inicio.
                     if event == INICIO:
-                        m_tablero.agregar_letra(lugares_usados_total,backup_text,event,escribir,save,
-                                                lugares_usados_temp,palabra,boton_de_la_letra,window,pos_atril_usadas)  
-                        cambiar = False
-                        letras_ingresadas += 1
+                        cambiar = m_tablero.agregar_letra(lugares_usados_total,backup_text,event,escribir,save,
+                                                lugares_usados_temp,palabra,boton_de_la_letra,window,pos_atril_usadas)
+                        if not cambiar: # Si se puso una letra se aumenta en 1 letras_ingresadas
+                            letras_ingresadas += 1
                 else:
                     #DETERMINAR SI SE INGRESA HORIZONTAL O VERTICAL
                     # print(horizontal)
                     if not lugares_usados_temp:
-                        m_tablero.agregar_letra(lugares_usados_total,backup_text,event,escribir,save,
+                        cambiar = m_tablero.agregar_letra(lugares_usados_total,backup_text,event,escribir,save,
                                                 lugares_usados_temp,palabra,boton_de_la_letra,window,pos_atril_usadas)
-                        cambiar = False
-                        letras_ingresadas += 1
+                        if not cambiar: # Si se puso una letra se aumenta en 1 letras_ingresadas
+                            letras_ingresadas += 1
                     else:
                         if not horizontal:
                             if m_tablero.es_vertical(letras_ingresadas,event,lugares_usados_temp):
                                 vertical = True # Si suma o resta 1 a las columnas, vertical = true
-                                m_tablero.agregar_letra(lugares_usados_total,backup_text,event,escribir,save,
+                                cambiar = m_tablero.agregar_letra(lugares_usados_total,backup_text,event,escribir,save,
                                                         lugares_usados_temp,palabra,boton_de_la_letra,window,pos_atril_usadas)                
-                                cambiar = False
-                                letras_ingresadas += 1
+                                if not cambiar: # Si se puso una letra se aumenta en 1 letras_ingresadas
+                                    letras_ingresadas += 1
                         if not vertical:
                             if m_tablero.es_horizontal(letras_ingresadas,event,lugares_usados_temp):
                                 horizontal = True
-                                m_tablero.agregar_letra(lugares_usados_total,backup_text,event,escribir,save,
+                                cambiar = m_tablero.agregar_letra(lugares_usados_total,backup_text,event,escribir,save,
                                                         lugares_usados_temp,palabra,boton_de_la_letra,window,pos_atril_usadas)
-                                cambiar = False
-                                letras_ingresadas += 1
+                                if not cambiar: # Si se puso una letra se aumenta en 1 letras_ingresadas
+                                    letras_ingresadas += 1
                 
                 # SE BORRA LA LETRA USADA
                 if not cambiar: # si cambiar pasa a false, es porque ya se puso una letra en el atril.
                     # print(boton_de_la_letra)
                     window[boton_de_la_letra].update("---")
             
-        
             #CHEQUEO DE PALABRA
             if m_tablero.ingreso_palabra(letras_ingresadas,event):
                 to_string = ''.join(palabra) # se pasa lista palabra a string
