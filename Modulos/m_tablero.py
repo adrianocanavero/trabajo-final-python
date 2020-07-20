@@ -4,6 +4,7 @@ import Modulos.m_fichas as m_fichas
 
 posicion_jugador = 0 # Es la posición en la que hay que poner la próxima palabra y puntaje de una jugada en concreta
 posicion_maquina = 0 # Es la posición en la que hay que poner la próxima palabra y puntaje de una jugada en concreta
+cant_letras = 7 # Es más fácil cambiar la cantidad de letras a usar si existe esta variable, porque se modifica un solo número
 
 def crear_boton(i,j,AN,AL,nivel):
 
@@ -81,13 +82,13 @@ def es_vertical(letras_ingresadas,event,lugares_usados):
 
     """Confirma que el ingreso de la palabra se esta realizando verticalmente."""
 
-    return letras_ingresadas <7 and event == (lugares_usados[0][0]+1, lugares_usados[0][1])
+    return letras_ingresadas <cant_letras and event == (lugares_usados[0][0]+1, lugares_usados[0][1])
 
 def es_horizontal(letras_ingresadas,event,lugares_usados):
 
     """Confirma que el ingreso de la palabra se esta realizando horizontalmente"""
 
-    return letras_ingresadas<7 and event == (lugares_usados[0][0], lugares_usados[0][1]+1) 
+    return letras_ingresadas<cant_letras and event == (lugares_usados[0][0], lugares_usados[0][1]+1) 
     
 def es_letra_atril(event):
 
@@ -127,7 +128,7 @@ def ingreso_palabra(letras_ingresadas,event):
         que se haya clickeado el boton de ingresar palabra"""
 
     if letras_ingresadas>= 2:
-        if letras_ingresadas == 7 or event == (471,471):
+        if letras_ingresadas == cant_letras or event == (471,471):
             return True
         else: return False
     else:

@@ -5,7 +5,7 @@ from random import choice
 from random import randrange
 
 nivel = 'medio'
-cant_letras = 7
+cant_letras = 7 # Es más fácil cambiar la cantidad de letras a usar si existe esta variable, porque se modifica un solo número
 letras_de_maquina = []
 
 def devolver_palabra():
@@ -15,7 +15,7 @@ def devolver_palabra():
 
     #print('devuelve primer palabra que encuentra')
     encontre = False
-    for i in reversed(range (2, 7)): # arranca desde 2
+    for i in reversed(range (2, cant_letras+1)): # arranca desde 2, y el +1 es por como funciona range
         combinations_list= list(combinations(letras_de_maquina, i))
         for tupla in combinations_list:
             to_string = ''.join(tupla)

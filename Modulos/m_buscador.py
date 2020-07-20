@@ -14,7 +14,7 @@ def clasificar(palabra,nivel):
     
 	if nivel == 'facil':
 		t = tag(palabra, tokenize=True, encoding='utf-8')
-		#print('tag: ',t[0][1]) # ver VB JJ o NN
+		# print('tag: ',t[0][1]) # ver VB JJ o NN
 		if 'NN' in t[0][1]: # tag devuelve una lista con una tupla ('palabra', 'tipo') asi que entre a la pos 0 de la lista y directamente al tipo que esta en la pos 1 de la tupla.
 			#print('Es sustantivo')
 			return True
@@ -27,7 +27,7 @@ def clasificar(palabra,nivel):
 		else:
 			#print('no es verbo ni adjetivo ni sustantivo')
 			return False
-	else: ## si es medio o dificil, valida solo adjetivos o verbos.
+	else: # si es medio o dificil, valida solo adjetivos o verbos.
 		t = tag(palabra, tokenize=True, encoding='utf-8')
 		#print('tag: ',t[0][1]) # ver VB JJ o NN
 		if 'JJ' in t[0][1]:

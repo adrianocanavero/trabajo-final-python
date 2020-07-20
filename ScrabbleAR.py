@@ -14,7 +14,7 @@ from Modulos.m_guardado import guardar,inicializar_variables,abrir_guardado
 
 def main(hay_save=False,tiempo=60,nivel="medio",valores_de_letras=valores_letras,bolsa_letras=bolsa_de_letras):
 
-    """ Funcion main: ejecuta el juego debidamente. El primer parámetro determina si hay una partida 
+    """Funcion main: ejecuta el juego debidamente. El primer parámetro determina si hay una partida 
         guardada y los otros la configuración del juego. Todos tienen valores por defecto"""
     
     # Si se eligió "Cargar partida" se cargan los datos de la partida guardada en variables
@@ -30,7 +30,7 @@ def main(hay_save=False,tiempo=60,nivel="medio",valores_de_letras=valores_letras
     AL = 2 # Este es el alto de los botones
     INICIO = (7,7)
     filas = 15
-    cant_letras = 7
+    cant_letras = 7 # Es más fácil cambiar la cantidad de letras a usar si existe esta variable, porque se modifica un solo número
     creando_letras = bolsa_letras
 
     Letras = [elem for sublist in creando_letras for elem in sublist] # hace que creando_letras sea una sola lista
