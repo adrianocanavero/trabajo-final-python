@@ -11,8 +11,9 @@ from Modulos.m_topten import top_puntajes
 from Modulos.m_configuracion import configurar
 from Modulos.m_veredicto import mostrar_puntaje
 from Modulos.m_guardado import guardar,inicializar_variables,abrir_guardado
+import Modulos.m_sonidos as sound
 
-def main(hay_save=False,tiempo=60,nivel="medio",valores_de_letras=valores_letras,bolsa_letras=bolsa_de_letras):
+def main(hay_save=False,tiempo=60,nivel="facil",valores_de_letras=valores_letras,bolsa_letras=bolsa_de_letras):
 
     """Funcion main: ejecuta el juego debidamente. El primer parámetro determina si hay una partida 
         guardada y los otros la configuración del juego. Todos tienen valores por defecto"""
@@ -83,6 +84,8 @@ def main(hay_save=False,tiempo=60,nivel="medio",valores_de_letras=valores_letras
 
     TIEMPO = tiempo # tiempo de juego en segundos
     
+    fondo = sound.s_fondo() # empieza musica de fondo
+
     # WINDOW LOOP
 
     while True:
@@ -101,6 +104,7 @@ def main(hay_save=False,tiempo=60,nivel="medio",valores_de_letras=valores_letras
         window['timer'].update('{}:{:02d}'.format((TIEMPO -round(tiempo_actual))//60,(TIEMPO -round(tiempo_actual))%60)) # la cuenta es regresiva
 
         if (tiempo_actual >= TIEMPO):
+            if fondo != None: fondo.fadeout(500)
             razon_fin = '¡Terminó el tiempo!'
             if palabra:
                 m_tablero.quitar_letras(lugares_usados_temp,backup_text,window)
@@ -109,15 +113,18 @@ def main(hay_save=False,tiempo=60,nivel="medio",valores_de_letras=valores_letras
             break
 
         if event == 'Posponer':
+            if fondo != None: fondo.fadeout(500)
             guardar(save,lugares_usados_total,lugares_usados_temp,window,pos_atril_usadas,nivel,bolsa_letras,
                 letras_ingresadas,palabra,backup_text,horizontal,vertical,puntos_jugador, 
                 puntos_maquina,Letras,tiempo_actual,TIEMPO,valores_de_letras,veces_cambiadas)
             break
         
         if event == None:
+            if fondo != None: fondo.fadeout(500)
             break
 
         if event == 'Terminar':
+            if fondo != None: fondo.fadeout(500)
             m_tablero.quitar_letras(lugares_usados_temp,backup_text,window)
             m_tablero.devolver_letras_atril(palabra,pos_atril_usadas,window)
             razon_fin = 'Terminar'
@@ -196,6 +203,7 @@ def main(hay_save=False,tiempo=60,nivel="medio",valores_de_letras=valores_letras
             if m_tablero.ingreso_palabra(letras_ingresadas,event):
                 to_string = ''.join(palabra) # se pasa lista palabra a string
                 if not m_buscador.buscar_palabra(to_string,nivel):
+                    sound.s_invalida()
                     m_tablero.quitar_letras(lugares_usados_temp,backup_text,window)
                     m_tablero.devolver_letras_atril(palabra,pos_atril_usadas,window)
                     
@@ -212,6 +220,7 @@ def main(hay_save=False,tiempo=60,nivel="medio",valores_de_letras=valores_letras
                     palabra = []
                     cambiar = False
                 else:
+                    sound.s_valida()
                     turno_jugador = False
                     puntos_actuales = m_tablero.calcular_puntos(palabra,lugares_usados_temp,valores_de_letras,nivel)
                     puntos_jugador += puntos_actuales
@@ -220,6 +229,7 @@ def main(hay_save=False,tiempo=60,nivel="medio",valores_de_letras=valores_letras
                     try:
                         m_tablero.dar_nuevas_letras(Letras,pos_atril_usadas,window) 
                     except IndexError: # si index error = lista vacia
+                        if fondo != None: fondo.fadeout(500)
                         razon_fin = '¡Se acabaron las fichas!'
                         mostrar_puntaje(razon_fin,puntos_jugador,puntos_maquina,window,m_maquina.letras_de_maquina,valores_de_letras,cant_letras)
                         break
@@ -255,6 +265,7 @@ def main(hay_save=False,tiempo=60,nivel="medio",valores_de_letras=valores_letras
                 try:
                     m_maquina.cambiar_letras_usadas_por_nuevas(palabra_maquina,Letras)
                 except IndexError: # si index error = lista vacia
+                    if fondo != None: fondo.fadeout(500)
                     razon_fin = '¡Se acabaron las fichas!'
                     mostrar_puntaje(razon_fin,puntos_jugador,puntos_maquina,window,m_maquina.letras_de_maquina,valores_de_letras,cant_letras)
                     break
@@ -262,17 +273,27 @@ def main(hay_save=False,tiempo=60,nivel="medio",valores_de_letras=valores_letras
     window.close()
 
 # PROGRAMA PRINCIPAL
+play = True
 while True:
+    if play:
+        sonido_menu = sound.s_menu()
+        play = False
     opcion_elegida = menu()
     if opcion_elegida == 'Nueva partida':
+        sound.s_boton()
+        if sonido_menu != None: sonido_menu.fadeout(500)
         main()
     elif opcion_elegida == 'Cargar partida':
+        sound.s_boton()
+        sonido_menu.fadeout(500)
         main(True)
     elif opcion_elegida == 'Configurar':
+        sound.s_boton()
         configuracion_elegida = configurar()
         if configuracion_elegida != None:
             main(False,configuracion_elegida["tiempo"],configuracion_elegida["nivel"],configuracion_elegida["puntaje fichas"],configuracion_elegida["cantidad fichas"])
     elif opcion_elegida == 'Top ten\npuntajes':
+        sound.s_boton()
         top_puntajes()
     else:
         break
