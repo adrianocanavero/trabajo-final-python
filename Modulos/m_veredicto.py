@@ -1,6 +1,6 @@
 import PySimpleGUI as sg
 import pickle
-import winsound
+import Modulos.m_sonidos as sound
 from Modulos.m_tablero import tomar_y_borrar
 from Modulos.m_carpeta import crear_carpeta
 
@@ -34,10 +34,7 @@ def ganar(total_jugador,total_maquina):
                     [sg.Button('Guardar Puntaje', button_color=('white', '#52313a'), visible=mostrar)],
                     [sg.Button('Salir', button_color=('white', '#52313a'))]]
     win_window = sg.Window('Resultado',win_layout,keep_on_top=True)
-    try:
-        winsound.PlaySound('Sonidos/ganar.wav', winsound.SND_ASYNC)
-    except:
-        pass
+    sonido_ganador = sound.s_ganador()
     while True:
         e,v = win_window.read()
         if e == 'Guardar Puntaje' and v[0]!='Ingresa tu nombre:':
@@ -75,7 +72,9 @@ def ganar(total_jugador,total_maquina):
                 # print(dic_top)
             break
         if e in ('Salir', None):
+            
             break
+    if sonido_ganador != None: sonido_ganador.fadeout(1500)
     win_window.close()
 
 def perder_empatar(total_jugador,total_maquina,resultado):
@@ -87,7 +86,7 @@ def perder_empatar(total_jugador,total_maquina,resultado):
         [sg.Button('Salir', button_color=('white', '#52313a'))]]
     
     window = sg.Window('Resultado', layout)
-    
+    sound.s_perdedor()
     while True:
         e,v = window.read()
         if e in('Salir', None):
