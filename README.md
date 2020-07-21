@@ -6,7 +6,7 @@ Creado por: Felipe Barreto y Adriano Canavero.
 Aclaraciones:
 
 Para ejecutar la aplicación, es necesario tener instalado
-Python 3 junto con la librería pattern y PySimpleGUI (la versión 4.20.0).
+Python 3 junto con la librería pattern y PySimpleGUI (la versión 4.18.2).
 
 En Linux algunos componentes del juego se ven un poco corridos respecto a su visualización en Windows.
 
