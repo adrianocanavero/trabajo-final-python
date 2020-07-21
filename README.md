@@ -6,12 +6,11 @@ Creado por: Felipe Barreto y Adriano Canavero.
 Aclaraciones:
 
 Para ejecutar la aplicación, es necesario tener instalado
-Python 3 junto con la librería pattern y PySimpleGUI (la versión 4.18.2).
+Python 3 junto con la librería Pattern (versión 3.6), PySimpleGUI (versión 4.18.2) y PyGame (versión 1.9.6).
 
 En Linux algunos componentes del juego se ven un poco corridos respecto a su visualización en Windows.
 
-El programa se ejecuta desde
-ScrabbleAR.py.
+El programa se ejecuta desde ScrabbleAR.py.
 
 El diccionario utilizado para la búsqueda de palabras está hecho en base a un archivo llamado es_AR.dic 
 perteneciente a un diccionario de Libre Office, el cual es de acceso libre.
