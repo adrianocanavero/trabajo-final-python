@@ -115,3 +115,11 @@ def inicializar_letras_maquina(Letras):
     
     for j in range(cant_letras):
         letras_de_maquina.append(tomar_y_borrar(Letras))
+
+def cambiar_letras_maquina(Letras):
+
+    """Cuando la maquina no encuentra una palabra con las letras de su atril, cambia 5 letras"""
+
+    for i in range(5):
+        Letras.append(tomar_y_borrar(letras_de_maquina)) # saco una de maquina y la llevo a letras
+        letras_de_maquina.append(tomar_y_borrar(Letras)) # saco una de letras y la llevo a maquina
