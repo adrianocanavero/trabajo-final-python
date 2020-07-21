@@ -13,7 +13,7 @@ from Modulos.m_veredicto import mostrar_puntaje
 from Modulos.m_guardado import guardar,inicializar_variables,abrir_guardado
 import Modulos.m_sonidos as sound
 
-def main(hay_save=False,tiempo=60,nivel="facil",valores_de_letras=valores_letras,bolsa_letras=bolsa_de_letras):
+def main(hay_save=False,tiempo=60,nivel="medio",valores_de_letras=valores_letras,bolsa_letras=bolsa_de_letras):
 
     """Funcion main: ejecuta el juego debidamente. El primer parámetro determina si hay una partida 
         guardada y los otros la configuración del juego. Todos tienen valores por defecto"""
@@ -63,7 +63,7 @@ def main(hay_save=False,tiempo=60,nivel="facil",valores_de_letras=valores_letras
         save,lugares_usados_temp,lugares_usados_total,vertical,horizontal, \
         letras_ingresadas,backup_text,palabra,pos_atril_usadas,Letras, \
         puntos_jugador,puntos_maquina,turno_jugador,tiempo_actual,tiempo, \
-        valores_de_letras,veces_cambiadas = inicializar_variables(save_window,datos_usuario)
+        valores_de_letras,veces_cambiadas,cambios_maquina = inicializar_variables(save_window,datos_usuario)
     else:
         tiempo_actual = 0
         save = {}
@@ -80,6 +80,7 @@ def main(hay_save=False,tiempo=60,nivel="facil",valores_de_letras=valores_letras
         # vuelvan a usar. Además, cuando se usa una letra se guarda acá y si está acá ya no se puede usar otra vez
         turno_jugador = choice([True, False])
         veces_cambiadas = 0
+        cambios_maquina = 0
     cambiar = False
 
     TIEMPO = tiempo # tiempo de juego en segundos
@@ -116,7 +117,7 @@ def main(hay_save=False,tiempo=60,nivel="facil",valores_de_letras=valores_letras
             if fondo != None: fondo.fadeout(500)
             guardar(save,lugares_usados_total,lugares_usados_temp,window,pos_atril_usadas,nivel,bolsa_letras,
                 letras_ingresadas,palabra,backup_text,horizontal,vertical,puntos_jugador, 
-                puntos_maquina,Letras,tiempo_actual,TIEMPO,valores_de_letras,veces_cambiadas)
+                puntos_maquina,Letras,tiempo_actual,TIEMPO,valores_de_letras,veces_cambiadas,cambios_maquina)
             break
         
         if event == None:
@@ -269,7 +270,10 @@ def main(hay_save=False,tiempo=60,nivel="facil",valores_de_letras=valores_letras
                     razon_fin = '¡Se acabaron las fichas!'
                     mostrar_puntaje(razon_fin,puntos_jugador,puntos_maquina,window,m_maquina.letras_de_maquina,valores_de_letras,cant_letras)
                     break
-            
+            elif cambios_maquina<3:
+                m_maquina.cambiar_letras_maquina(Letras)
+                cambios_maquina+=1
+
     window.close()
 
 # PROGRAMA PRINCIPAL
