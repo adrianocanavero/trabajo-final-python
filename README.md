@@ -1,7 +1,7 @@
 
 # ------------------------- ScrabbleAR -------------------------
 
-Creado por: Felipe Barreto y Adriano Canavero.
+Creado por: Felipe Barreto y Adriano Carlo Canavero.
 
 Aclaraciones:
 
