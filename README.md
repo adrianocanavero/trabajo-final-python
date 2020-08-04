@@ -18,5 +18,6 @@ El diccionario utilizado para la búsqueda de palabras está hecho en base a un 
 perteneciente a un diccionario de Libre Office, el cual es de acceso libre.
 
 La música fue compuesta y ejecutada por Adriano Canavero, por lo cual no infringe derechos de autor.
+El sonido de los botones fue descargado en http://soundbible.com/tags-button.html
 
 Este software está disponible bajo la licencia MIT.
