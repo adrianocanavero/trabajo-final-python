@@ -1,6 +1,10 @@
 import PySimpleGUI as sg
 import pickle
-import Modulos.m_sonidos as sound
+import platform
+if platform.system() == 'Linux':
+    import Modulos.m_sonidosLINUX as sound
+else:
+    import Modulos.m_sonidos as sound
 from Modulos.m_tablero import tomar_y_borrar
 from Modulos.m_carpeta import crear_carpeta
 
@@ -74,7 +78,9 @@ def ganar(total_jugador,total_maquina):
         if e in ('Salir', None):
             
             break
-    if sonido_ganador != None: sonido_ganador.fadeout(1500)
+    if platform.system() == 'Linux' and sonido_ganador != None:
+        sonido_ganador.stop()
+    elif sonido_ganador != None: sonido_ganador.fadeout(1500)
     win_window.close()
 
 def perder_empatar(total_jugador,total_maquina,resultado):
