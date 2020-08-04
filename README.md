@@ -13,7 +13,9 @@ simpleaudio (version 1.0.4).
 Para instalar simpleaudio:
 
 pip install --upgrade pip setuptools
+
 pip install simpleaudio
+
 sudo apt-get install -y python3-dev libasound2-dev
 
 En Linux algunos componentes del juego se ven un poco corridos respecto a su visualización en Windows.
