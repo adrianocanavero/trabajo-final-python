@@ -25,6 +25,7 @@ def s_ganador():
         pass
     else:
         return wavganar
+
 def s_menu():
 
     """Ejecuta sonido menu.wav"""
@@ -35,20 +36,7 @@ def s_menu():
     except:
         pass
     else:
-        return wavmenu
-
-def s_fondo():
-
-    """Ejecuta sonido fondo_juego.wav"""
-
-    try:
-        wavfondo = mixer.Sound('Sonidos/fondo_juego.wav')
-        wavfondo.play(loops = -1)
-    except:
-        pass
-    else:
-        return wavfondo    
-
+        return wavmenu  
 
 def s_valida():
 
@@ -73,15 +61,9 @@ def s_invalida():
 def s_boton():
 
     """Ejecuta sonido boton.wav"""
+    
     try:
         wavboton = mixer.Sound('Sonidos/boton.wav')
         wavboton.play()  
     except:
         pass
-
-
-# test
-
-if __name__ == '__main__':
-    s_ganador()
-    time.sleep(120)
