@@ -1,5 +1,5 @@
 import os
-
+import platform
 def crear_carpeta():
     
     """Si no existe la carpeta "Archivos locales" la crea, sino no hace nada.
@@ -7,6 +7,9 @@ def crear_carpeta():
         partida y el top ten"""
     
     try:
-        os.mkdir(os.getcwd()+"\Archivos locales")
+        if platform.system() == 'Linux':
+            os.mkdir(os.getcwd() + "/Archivos locales")
+        else:
+            os.mkdir(os.getcwd()+"\Archivos locales")
     except OSError:
         pass

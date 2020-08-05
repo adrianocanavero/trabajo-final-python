@@ -41,7 +41,7 @@ def ganar(total_jugador,total_maquina):
     sonido_ganador = sound.s_ganador()
     while True:
         e,v = win_window.read()
-        if e == 'Guardar Puntaje' and v[0]!='Ingresa tu nombre:':
+        if e == 'Guardar Puntaje' and v[0]!='Ingresa tu nombre:' and v[0] !='':
             if len(dic_top)== 10:
                 if v[0] in dic_top.keys(): # si el nombre ingresado es igual al que hay que reemplazar.
                     if total_jugador>dic_top[v[0]]: # si es el mismo nombre y el total es mayor:
