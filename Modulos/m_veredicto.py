@@ -39,6 +39,7 @@ def ganar(total_jugador,total_maquina):
                     [sg.Button('Salir', button_color=('white', '#52313a'))]]
     win_window = sg.Window('Resultado',win_layout,keep_on_top=True)
     sonido_ganador = sound.s_ganador()
+    
     while True:
         e,v = win_window.read()
         if e == 'Guardar Puntaje' and v[0]!='Ingresa tu nombre:' and v[0] !='':
@@ -75,8 +76,8 @@ def ganar(total_jugador,total_maquina):
                 archivo_topten.close()
                 # print(dic_top)
             break
+        
         if e in ('Salir', None):
-            
             break
     if platform.system() == 'Linux' and sonido_ganador != None:
         sonido_ganador.stop()
@@ -97,7 +98,6 @@ def perder_empatar(total_jugador,total_maquina,resultado):
         e,v = window.read()
         if e in('Salir', None):
             break
-
     window.close()
 
 def mostrar_puntaje(razon_fin,puntos_jugador,puntos_maquina,window,letras_maquina,valores_de_letras,cant_letras):
@@ -130,6 +130,7 @@ def mostrar_puntaje(razon_fin,puntos_jugador,puntos_maquina,window,letras_maquin
     layout_final = [[sg.Column(layout_atril_jugador)], [sg.Column(layout_atril_maquina)], [sg.Button('Siguiente', button_color=('white', '#52313a'))]]
 
     window_final = sg.Window(razon_fin,layout_final,keep_on_top=True) # se mantiene siempre arriba del tablero
+    
     while True:
         evento,values = window_final.read()
         if evento == None:

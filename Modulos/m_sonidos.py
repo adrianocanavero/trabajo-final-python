@@ -1,5 +1,4 @@
 import pygame,time
-
 from pygame import mixer
 
 mixer.init(48000, -16, 2, 1024)

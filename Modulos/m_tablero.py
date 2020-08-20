@@ -201,8 +201,8 @@ def cambiar_letras(window,Letras,cant_letras):
     letras_a_cambiar = []
     pos_a_cambiar = []
     ok = False
+    
     while True:
-        
         event,values = win.Read()
 
         if isinstance(event,int) and not event == '---': # si es int, es una letra del atril

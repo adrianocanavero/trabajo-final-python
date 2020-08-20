@@ -4,12 +4,12 @@ import Modulos.m_maquina as m_maquina
 from Modulos.m_carpeta import crear_carpeta
 
 def guardar(save,lugares_usados_total,lugares_usados_temp,window,pos_atril_usadas,nivel,bolsa_letras,letras_ingresadas,palabra,
-    backup_text,horizontal,vertical,puntos_jugador,puntos_maquina,Letras,tiempo_actual,TIEMPO,valores_de_letras,veces_cambiadas,cambios_maquina):
+    backup_text,horizontal,vertical,puntos_jugador,puntos_maquina,Letras,tiempo_actual,TIEMPO,valores_de_letras,veces_cambiadas,cambios_maquina,cant_letras):
     
     """Guarda la información de la partida si el jugador elige Posponer. En save se encuentra la informacion del tablero,
         mientras que en datos_usuario estan los datos indispensables que necesita el juego para realizar sus funciones"""
 
-    for i in range (7):
+    for i in range (cant_letras):
         save[i] = window[i].GetText()
     save['timer'] = tiempo_actual
     crear_carpeta() # Si la carpeta "Archivos locales" no existe la crea, sino no hace nada
@@ -67,8 +67,8 @@ def inicializar_variables(save_window,datos_usuario):
     veces_cambiadas = datos_usuario['cambios']
     cambios_maquina = datos_usuario['cambios_mq']
     return save,lugares_usados_temp,lugares_usados_total,vertical,horizontal,letras_ingresadas, \
-            backup_text,palabra,pos_atril_usadas,Letras,puntos_jugador,puntos_maquina,turno_jugador, \
-            tiempo_actual,tiempo,valores_de_letras,veces_cambiadas,cambios_maquina
+        backup_text,palabra,pos_atril_usadas,Letras,puntos_jugador,puntos_maquina,turno_jugador, \
+        tiempo_actual,tiempo,valores_de_letras,veces_cambiadas,cambios_maquina
 
 def abrir_guardado():
 

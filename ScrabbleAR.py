@@ -88,7 +88,6 @@ def main(hay_save=False,tiempo=60,nivel="medio",valores_de_letras=valores_letras
     cambiar = False
 
     TIEMPO = tiempo # tiempo de juego en segundos
-    
 
     # WINDOW LOOP
 
@@ -118,7 +117,7 @@ def main(hay_save=False,tiempo=60,nivel="medio",valores_de_letras=valores_letras
         if event == 'Posponer':
             guardar(save,lugares_usados_total,lugares_usados_temp,window,pos_atril_usadas,nivel,bolsa_letras,
                 letras_ingresadas,palabra,backup_text,horizontal,vertical,puntos_jugador, 
-                puntos_maquina,Letras,tiempo_actual,TIEMPO,valores_de_letras,veces_cambiadas,cambios_maquina)
+                puntos_maquina,Letras,tiempo_actual,TIEMPO,valores_de_letras,veces_cambiadas,cambios_maquina,cant_letras)
             break
         
         if event == None:
