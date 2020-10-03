@@ -1,21 +1,36 @@
-import PySimpleGUI as sg
+try:
+    import PySimpleGUI as sg
+except ModuleNotFoundError:
+    print('Módulo PySimpleGui no encontrado. Asegúrese de instalar PySimpleGui 4.18.2')
 import platform
+import sys
 from random import choice
-import Modulos.m_buscador as m_buscador
-import Modulos.m_tablero as m_tablero
-from Modulos.m_fichas import valores_letras
-from Modulos.m_fichas import bolsa_de_letras
-import Modulos.m_maquina as m_maquina
+try:
+    import Modulos.m_buscador as m_buscador
+    import Modulos.m_tablero as m_tablero
+    from Modulos.m_fichas import valores_letras
+    from Modulos.m_fichas import bolsa_de_letras
+    import Modulos.m_maquina as m_maquina
+    from Modulos.m_menu import menu
+    from Modulos.m_topten import top_puntajes
+    from Modulos.m_configuracion import configurar
+    from Modulos.m_veredicto import mostrar_puntaje
+    from Modulos.m_guardado import guardar,inicializar_variables,abrir_guardado
+    if platform.system() == 'Linux':
+        import Modulos.m_sonidosLINUX as sound
+    else:
+        import Modulos.m_sonidos as sound
+except ModuleNotFoundError: #Manejo de excepcion por si falta un modulo del juego.
+    layoutERROR = [[sg.Text('Faltan módulos del juego. Descárguese ScrabbleAR nuevamente.',font= 'Any 10', justification='center')],
+                    [sg.Button('Salir', button_color=('white', '#52313a'))]]
+    window = sg.Window('Error', layoutERROR)
+    while True:
+        e,v = window.read()
+        if e in('Salir', None):
+            break
+    window.close()
+    sys.exit()
 import time
-from Modulos.m_menu import menu
-from Modulos.m_topten import top_puntajes
-from Modulos.m_configuracion import configurar
-from Modulos.m_veredicto import mostrar_puntaje
-from Modulos.m_guardado import guardar,inicializar_variables,abrir_guardado
-if platform.system() == 'Linux':
-    import Modulos.m_sonidosLINUX as sound
-else:
-    import Modulos.m_sonidos as sound
 
 def main(hay_save=False,tiempo=60,nivel="medio",valores_de_letras=valores_letras,bolsa_letras=bolsa_de_letras):
 
@@ -60,7 +75,7 @@ def main(hay_save=False,tiempo=60,nivel="medio",valores_de_letras=valores_letras
 
     layout = [[sg.Column(pal_y_pun_maq_en_pantalla),sg.Column(zona_puntos_maquina),sg.Column(tablero),sg.Column(zona_puntos_jugador),sg.Column(pal_y_pun_jug_en_pantalla)]]
 
-    window = sg.Window('ScrabbleAR',layout)
+    window = sg.Window('ScrabbleAR - Nivel: ' + nivel ,layout)
 
     # Variables del juego
     if hay_save: # aca se cargan todos los datos
