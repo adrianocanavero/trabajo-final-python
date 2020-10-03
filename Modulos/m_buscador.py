@@ -1,12 +1,27 @@
 from pattern.es import tag
+import sys
+import PySimpleGUI as sg
 import pickle
 
-archivo_palabras = open('Pickles/lista_palabras_arg.pickle', 'rb')
-lista_palabras = pickle.load(archivo_palabras)
-archivo_palabras.close()
-archivo_verbos = open('Pickles/lista_verbos_sin_acento.pickle', 'rb')
-lista_verbos = pickle.load(archivo_verbos)
-archivo_verbos.close()
+try:
+	archivo_palabras = open('Pickles/lista_palabras_arg.pickle', 'rb')
+	lista_palabras = pickle.load(archivo_palabras)
+	archivo_palabras.close()
+	archivo_verbos = open('Pickles/lista_verbos_sin_acento.pickle', 'rb')
+	lista_verbos = pickle.load(archivo_verbos)
+	archivo_verbos.close()
+except FileNotFoundError: #Manejo de excepcion por si falta un modulo del juego.
+    layoutERROR = [[sg.Text('Faltan archivos de palabras. Descárguese ScrabbleAR nuevamente',font= 'Any 10', justification='center')],
+                    [sg.Button('Salir', button_color=('white', '#52313a'))]]
+    window = sg.Window('Error', layoutERROR)
+    while True:
+        e,v = window.read()
+        if e in('Salir', None):
+            break
+    window.close()
+    sys.exit()
+	
+
 
 def clasificar(palabra,nivel):
 
